@@ -14,46 +14,66 @@
   <!-- NAVBAR (DESKTOP)-->
   <nav class="navbar navbar-expand-lg navbar-vn sticky-top d-none d-lg-flex">
     <div class="container-fluid px-4 align-items-center">
-      <!-- Secciones -->
-      <div class="collapse navbar-collapse order-1 order-lg-0" id="navbar-vn-1" style="flex: 1;">
-        <ul class="navbar-nav mb-3 mb-lg-0">
-          <li class="nav-item"><a class="nav-link navbar-vn-links" href="/">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link navbar-vn-links" href="/catalogo">Catálogo</a></li>
-          <li class="nav-item"><a class="nav-link navbar-vn-links" href="/servicios">Servicios</a></li>
-          <li class="nav-item"><a class="nav-link navbar-vn-links" href="/blog">Blog</a></li>
-          <li class="nav-item"><a class="nav-link navbar-vn-links" href="/contacto">Contacto</a></li>
+      <!--Logo izquierda -->
+      <div class="order-0" style="flex: 1;">
+        <a href="/"><img src="/img/logo_cmdesign_iso.svg" alt="CmDesign" height="45"></a>
+      </div>
+
+      <!-- Secciones centradas -->
+      <div class="collapse navbar-collapse order-1 justify-content-center" id="navbar-vn-1" style="flex: 0 0 auto;">
+        <ul class="navbar-nav mb-0">
+          <li class="nav-item text-center">
+            <a class="nav-link navbar-vn-links" href="/">
+              <span>Camisetas</span>
+              <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Todas las tallas</small>
+            </a>
+          </li>
+          <li class="nav-item text-center">
+            <a class="nav-link navbar-vn-links" href="/catalogo">
+              <span>Buzos</span>
+              <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">y hoodies</small>
+            </a>
+          </li>
+          <li class="nav-item text-center">
+            <a class="nav-link navbar-vn-links" href="/servicios">
+              <span>Nuevos</span>
+              <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Lanzamientos</small>
+            </a>
+          </li>
+          <li class="nav-item text-center">
+            <a class="nav-link navbar-vn-links" href="/blog">
+              <span>Descuentos</span>
+              <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Hasta 60% off</small>
+            </a>
+          </li>
+          <li class="nav-item text-center">
+            <a class="nav-link navbar-vn-links" href="/contacto">
+              <span>Contacto</span>
+              <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Tiendas</small>
+            </a>
+          </li>
         </ul>
       </div>
 
-      <!--Logo -->
-      <div class="text-center order-0" style="flex: 1;">
-        <a href="/"><img src="/img/logo.png" alt="Verde Nexo" height="45"></a>
-      </div>
-
-      <!--Buscador + botones -->
-      <!---Buscador-->
+      <!--Iconos derecha -->
       <div class="d-flex align-items-center justify-content-end order-2" style="flex: 1; gap: 0.75rem;">
-        <form class="d-none d-lg-flex" role="search" style="min-width: 200px;">
-          <div class="input-group">
-            <span class="input-group-text">
-              <img src="/img/search-alt.png" alt="Buscar" width="16" height="16">
-            </span>
-            <input class="form-control" type="search" placeholder="Buscar..." aria-label="Buscar">
-          </div>
-        </form>
+        <!-- Icono de busqueda -->
+        <button id="btnSearchOpen" class="btn btn-vn-session" type="button" aria-label="Buscar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </button>
         <!-- Botones de inicio de sesión y carrito -->
-        <div id="botonesSesion" class="d-flex" style="gap: 0.5rem;">
+        <div id="botonesSesion" class="d-flex align-items-center" style="gap: 0.5rem;">
           <!-- Inicio Sesion-->
-          <a id="loginLink" href="/login" class="btn btn-vn-session" type="button">
-            <img src="/img/log-in-alt.png" alt="Iniciar sesión" width="20" height="20">
+          <a id="loginLink" href="/login" class="btn btn-vn-session d-flex align-items-center justify-content-center" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </a>
           <!-- Registro -->
-          <a id="registerLink" href="/register" class="btn btn-vn-session" type="button">
-            <img src="/img/user-plus-alt.png" alt="Registrarse" width="20" height="20">
+          <a id="registerLink" href="/register" class="btn btn-vn-session d-flex align-items-center justify-content-center" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
           </a>
           <!-- Carrito de compras -->
-          <a href="/carrito" class="btn btn-vn-session position-relative" aria-expanded="false" type="button">
-            <img src="/img/shopping-cart-alt.png" alt="carrito" width="20" height="20">
+          <a href="/carrito" class="btn btn-vn-session d-flex align-items-center justify-content-center position-relative" aria-expanded="false" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
             <span id="cartCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" style="display: none;">0</span>
           </a>
         </div>
@@ -74,13 +94,14 @@
       </div>
       <!-- Logo centrado -->
       <div class="flex-fill text-center">
-        <a href="/"><img src="/img/logo.svg" alt="Verde Nexo" height="40" class="logo-verde-pasto"></a>
+        <a href="/"><img src="/img/logo_cmdesign_iso.svg" alt="Verde Nexo" height="40"></a>
       </div>
       <!-- Carrito derecha -->
       <div class="flex-fill text-end">
-        <a href="/carrito" class="me-2">
-          <img src="/img/shopping-cart-alt.png" alt="carrito" width="26" height="26">
-        </a>
+        <a href="/carrito" class="me-2" aria-expanded="false" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+            <span id="cartCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" style="display: none;">0</span>
+          </a>
       </div>
     </div>
 
@@ -98,6 +119,27 @@
       </form>
     </div>
   </header>
+
+  <!-- Modal de Busqueda (slide down) -->
+  <div id="searchModal" class="search-modal">
+    <div class="search-modal-content">
+      <div class="container py-4">
+        <div class="d-flex align-items-center gap-3">
+          <form class="flex-grow-1" role="search" action="/buscar" method="GET">
+            <div class="input-group input-group-lg">
+              <span class="input-group-text bg-white border-end-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+              </span>
+              <input id="searchInput" class="form-control border-start-0" name="q" type="search" placeholder="Buscar productos..." aria-label="Buscar" autofocus>
+            </div>
+          </form>
+          <button id="btnSearchClose" type="button" class="btn btn-outline-secondary" aria-label="Cerrar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal de Perfil -->
   <div class="modal fade" id="modalPerfil" tabindex="-1" aria-labelledby="modalPerfilLabel" aria-hidden="true">
@@ -258,7 +300,90 @@
     .logo-verde-pasto {
       filter: invert(43%) sepia(83%) saturate(531%) hue-rotate(74deg) brightness(92%) contrast(88%);
     }
+
+    /* Search Modal Styles */
+    .search-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1055;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease-in-out;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .search-modal.active {
+      transform: translateY(0);
+    }
+
+    .search-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1054;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .search-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .search-modal .input-group-text {
+      border-color: #ddd;
+    }
+
+    .search-modal .form-control {
+      border-color: #ddd;
+    }
+
+    .search-modal .form-control:focus {
+      box-shadow: none;
+      border-color: #000;
+    }
   </style>
+
+  <!-- Overlay para el modal de busqueda -->
+  <div id="searchOverlay" class="search-modal-overlay"></div>
+
+  <script>
+    // Search Modal Logic
+    document.addEventListener('DOMContentLoaded', function() {
+      const btnOpen = document.getElementById('btnSearchOpen');
+      const btnClose = document.getElementById('btnSearchClose');
+      const modal = document.getElementById('searchModal');
+      const overlay = document.getElementById('searchOverlay');
+      const searchInput = document.getElementById('searchInput');
+
+      function openSearch() {
+        modal.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => searchInput.focus(), 300);
+      }
+
+      function closeSearch() {
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (btnOpen) btnOpen.addEventListener('click', openSearch);
+      if (btnClose) btnClose.addEventListener('click', closeSearch);
+      if (overlay) overlay.addEventListener('click', closeSearch);
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeSearch();
+      });
+    });
+  </script>
 </body>
 
 </html>

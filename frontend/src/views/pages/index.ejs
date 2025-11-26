@@ -1,8 +1,10 @@
 <%- include('../partials/header') %>
 
-<script type="module" src="/js/api.functions.js"></script>;
-<script type="module" src="/js/index.functions.js"></script>;
+<script type="module" src="/js/api.functions.js"></script>
+<script type="module" src="/js/index.functions.js"></script>
+<script type="module" src="/js/cm-catalog.js"></script>
 <link rel="stylesheet" href="/css/index.styles.css">
+<link rel="stylesheet" href="/css/cm-catalog.css">
 
 <!-- Botón flotante Panel Admin (solo visible para admin, se muestra por JS) -->
 <div id="adminPanelFab" style="display:none; position:fixed; bottom:32px; right:32px; z-index:9999;">
@@ -27,17 +29,18 @@ import { API } from '/js/api.functions.js';
   } catch {}
 })();
 </script>
-<!-- Banner principal con texto sobre la imagen -->
+
+<!-- Banner principal con texto sobre la imagen
 <section class="position-relative" style="height: 650px; overflow: hidden;">
-  <!-- Imagen de fondo -->
+  Imagen de fondo
   <img src="/img/l1.png" alt="monstera" class="w-100 h-100" style="object-fit: cover; object-position: center;">
 
-  <!-- Contenido encima de la imagen -->
+  Contenido encima de la imagen
   <div class="position-absolute top-50 start-0 translate-middle-y text-white p-4 p-md-5" 
        style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)); 
               max-width: 550px; border-radius: 15px; margin-left: 5%; 
               backdrop-filter: blur(2px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
-    <h1 class="fw-bold mb-4" style="font-size: 2.5rem; line-height: 1.1; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: -0.01em;">
+    <h1 class="fw-bold mb-4" style="font-size: </div>2.5rem; line-height: 1.1; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: -0.01em;">
       Transforma tu espacio con <span style="color: #90EE90;">naturaleza viva</span>
     </h1>
     <p class="mb-4" style="font-size: 1.1rem; line-height: 1.6; color: #f8f9fa; opacity: 0.95; letter-spacing: 0.01em;">
@@ -49,9 +52,12 @@ import { API } from '/js/api.functions.js';
       <i class="fas fa-leaf me-2"></i>Descubre Nuestro Catálogo
     </a>
   </div>
-</section>
+</section> -->
 
-<!-- Features Section -->
+
+
+
+<!-- Features Section
 <section class="features-section py-5">
     <div class="container">
         <div class="row text-center mb-5">
@@ -93,9 +99,9 @@ import { API } from '/js/api.functions.js';
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- Products Preview Slider -->
+<!-- Products Preview Slider
 <section class="products-preview py-5 bg-light">
     <div class="container">
         <div class="row text-center mb-5">
@@ -105,15 +111,15 @@ import { API } from '/js/api.functions.js';
             </div>
         </div>
         
-        <!-- Slider Container -->
+         Slider Container
         <div class="position-relative">
             <div class="productos-slider-container overflow-hidden">
                 <div class="productos-slider d-flex transition-all" id="productosSlider" style="transform: translateX(0px); transition: transform 0.5s ease;">
-                    <!-- Productos se cargarán dinámicamente aquí -->
+                     Productos se cargarán dinámicamente aquí 
                 </div>
             </div>
             
-            <!-- Navigation Arrows -->
+             Navigation Arrows 
             <button class="slider-arrow slider-arrow-left btn btn-success position-absolute top-50 start-0 translate-middle-y ms-2" 
                     onclick="window.moverSlider('prev')" style="z-index: 10; width: 50px; height: 50px; border-radius: 50%; display: none;">
                 <i class="fas fa-chevron-left"></i>
@@ -130,9 +136,9 @@ import { API } from '/js/api.functions.js';
             </a>
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- Estadísticas Section -->
+<!-- Estadísticas Section 
 <section class="stats-section py-5" style="background: linear-gradient(135deg, #2f5233, #4a7c59);">
     <div class="container">
         <div class="row text-center text-white">
@@ -166,9 +172,9 @@ import { API } from '/js/api.functions.js';
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- Categorías Destacadas -->
+<!-- Categorías Destacadas 
 <section class="categories-section py-5">
     <div class="container">
         <div class="row text-center mb-5">
@@ -222,9 +228,9 @@ import { API } from '/js/api.functions.js';
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- Testimonios -->
+<!-- Testimonios 
 <section class="testimonials-section py-5 bg-light">
     <div class="container">
         <div class="row text-center mb-5">
@@ -302,9 +308,9 @@ import { API } from '/js/api.functions.js';
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- Call to Action -->
+<!-- Call to Action 
 <section class="cta-section py-5" style="background: linear-gradient(135deg, rgba(47, 82, 51, 0.9), rgba(74, 124, 89, 0.9)); background-size: cover; background-position: center;">
     <div class="container text-center text-white">
         <div class="row justify-content-center">
@@ -322,9 +328,9 @@ import { API } from '/js/api.functions.js';
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
-<!-- FAQ Section -->
+<!-- FAQ Section 
 <section class="faq-section py-5">
     <div class="container">
         <div class="row text-center mb-5">
@@ -392,15 +398,132 @@ import { API } from '/js/api.functions.js';
             </div>
         </div>
     </div>
+</section>  -->
+
+<!-- ===================== HERO BANNER ===================== -->
+<section class="cm-hero-banner">
+  <a href="/catalogo?coleccion=navidad">
+    <img src="/img/hero_navidad.webp" alt="Temporada Navideña - Nueva Colección" class="cm-hero-img">
+  </a>
 </section>
 
+<!-- ===================== CATALOGO CMDESIGN ===================== -->
+<section class="cm-catalog py-4">
+  <div class="container-fluid px-3 px-md-4">
+    
+    <!-- Filtros superiores -->
+    <div class="cm-filters-bar mb-3">
+      <div class="cm-filters-row">
+        <!-- Filtros dropdown -->
+        <div class="cm-filter-dropdowns">
+          <div class="cm-filter-dropdown">
+            <button class="cm-filter-btn" data-filter="subcategoria">
+              Sub-Categoría <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="cm-filter-dropdown">
+            <button class="cm-filter-btn" data-filter="edad">
+              Edad <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="cm-filter-dropdown">
+            <button class="cm-filter-btn" data-filter="genero">
+              Género <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="cm-filter-dropdown">
+            <button class="cm-filter-btn" data-filter="marca">
+              Marca <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="cm-filter-dropdown">
+            <button class="cm-filter-btn" data-filter="personaje">
+              Personaje <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="cm-filter-dropdown">
+            <button class="cm-filter-btn" data-filter="talla">
+              Talla <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Rango de precios -->
+        <div class="cm-price-range">
+          <span>Precio:</span>
+          <span class="cm-price-value">$ <span id="cmMinPrice">0</span></span>
+          <input type="range" id="cmPriceRange" min="0" max="500000" value="250000" class="cm-range-slider">
+          <span class="cm-price-value">$ <span id="cmMaxPrice">500.000</span></span>
+          <button class="cm-price-go">&gt;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de resultados -->
+    <div class="cm-results-bar mb-3">
+      <div class="cm-results-count">
+        <span id="cmProductCount">0</span> productos
+      </div>
+      <div class="cm-results-actions">
+        <div class="cm-view-toggle">
+          <button class="cm-view-btn" id="cmColsBtn" title="Cambiar columnas">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+          </button>
+          <div class="cm-cols-menu" id="cmColsMenu">
+            <button data-cols="5">5 columnas</button>
+            <button data-cols="4">4 columnas</button>
+            <button data-cols="3">3 columnas</button>
+            <button data-cols="2">2 columnas</button>
+          </div>
+        </div>
+        <div class="cm-sort-dropdown">
+          <button class="cm-sort-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
+            Ordenar Por
+          </button>
+          <div class="cm-sort-menu" id="cmSortMenu">
+            <button data-sort="ventas">Más vendidos</button>
+            <button data-sort="-createdAt">Más recientes</button>
+            <button data-sort="descuento">Mayor descuento</button>
+            <button data-sort="precioBase">Menor precio</button>
+            <button data-sort="-precioBase">Mayor precio</button>
+            <button data-sort="nombre">Nombre A-Z</button>
+            <button data-sort="-nombre">Nombre Z-A</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de productos -->
+    <div class="cm-products-grid" id="cmProductsGrid" data-cols="5">
+      <!-- Los productos se cargan dinamicamente -->
+      <div class="cm-loading">
+        <div class="cm-spinner"></div>
+        <p>Cargando productos...</p>
+      </div>
+    </div>
+
+    <!-- Barra de progreso y ver más -->
+    <div class="cm-load-more-section">
+      <div class="cm-progress-bar">
+        <div class="cm-progress-fill" id="cmProgressFill" style="width: 0%"></div>
+      </div>
+      <p class="cm-progress-text">Mostrando <span id="cmShownCount">0</span> de <span id="cmTotalCount">0</span> productos</p>
+      <button class="cm-load-more-btn" id="cmLoadMoreBtn">VER MÁS</button>
+    </div>
+
+  </div>
+</section>
+<!-- ===================== FIN CATALOGO CMDESIGN ===================== -->
+
+
 <!-- Newsletter Section -->
-<section class="newsletter-section py-5 bg-success text-white">
+<section class="py-5 text-white" style="background: linear-gradient(to top, #761ee9, #3f51b5);">
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-lg-6">
-                <h3 class="fw-bold mb-3">¡Mantente conectado con Vivero Verde Nexo!</h3>
-                <p class="mb-4">Suscríbete a nuestro newsletter y recibe ofertas exclusivas y consejos de jardinería.</p>
+                <h3 class="fw-bold mb-3">¡Mantente conectado con CM!</h3>
+                <p class="mb-4">Suscríbete a nuestro newsletter y recibe ofertas y descuentos exclusivos.</p>
                 
                 <form class="d-flex gap-2">
                     <input type="email" class="form-control" placeholder="Tu email...">
