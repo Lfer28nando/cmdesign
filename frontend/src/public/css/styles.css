@@ -4,6 +4,87 @@
   --shadow-navbar: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
+        .cm-trust-bar-container {
+            width: 100%;
+            background-color: #ffffff;
+            border-bottom: 1px solid #f3f4f6;
+            padding: 3rem 1rem; /* Espaciado arriba/abajo */
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cm-trust-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            /* MÓVIL (Por defecto): 2 Columnas */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem; /* Espacio entre elementos */
+        }
+
+        /* Ítem Individual */
+        .cm-trust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Icono */
+        .cm-trust-icon {
+            color: #1f2937; /* Gris oscuro */
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Efecto Hover sutil en el icono */
+        .cm-trust-item:hover .cm-trust-icon {
+            transform: scale(1.1);
+        }
+
+        /* Títulos */
+        .cm-trust-title {
+            font-size: 0.875rem; /* 14px */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #111827;
+            margin: 0 0 0.5rem 0;
+        }
+
+        /* Texto descriptivo */
+        .cm-trust-desc {
+            font-size: 0.75rem; /* 12px */
+            color: #6b7280; /* Gris medio */
+            line-height: 1.5;
+            max-width: 220px;
+            margin: 0;
+        }
+
+        /* =========================================
+           MEDIA QUERIES (Responsividad)
+           ========================================= */
+
+        /* ESCRITORIO (Pantallas mayores a 1024px) 
+           Aquí forzamos las 4 columnas horizontales */
+        @media (min-width: 1024px) {
+            .cm-trust-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .cm-trust-title {
+                font-size: 1rem; /* Un poco más grande en desktop */
+            }
+        }
+
+        /* MÓVIL MUY PEQUEÑO (Opcional: Si la pantalla es < 350px, colapsar a 1 columna) 
+           Quita esto si quieres forzar siempre 2 columnas */
+        @media (max-width: 350px) {
+            .cm-trust-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
 /* NavbarDesktop styles: Open */
 .navbar-vn {
   background-color: #fff;
