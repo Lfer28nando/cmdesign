@@ -4,77 +4,86 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vivero Verde Nexo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>Iniciar Sesión - CmDesign</title>
+    <link rel="stylesheet" href="/css/output.css">
 </head>
-</head>
-<script type="module" src="/js/api.functions.js"></script>
-<script type="module" src="/js/googleAuth.functions.js"></script>
-<script type="module" src="/js/login.functions.js"></script>
 
-<!-- NAVBAR (DESKTOP)-->
-<nav class="navbar navbar-expand-lg navbar-vn sticky-top d-none d-lg-flex">
-    <div class="container-fluid px-4 align-items-center">
-        <!--Logo izquierda -->
-        <div class="order-0" style="flex: 1;">
-            <a href="/"><img src="/img/logo_cmdesign_iso.svg" alt="CmDesign" height="45"></a>
-        </div>
+<body class="h-screen overflow-hidden bg-neutral-900">
+    <script type="module" src="/js/api.functions.js"></script>
+    <script type="module" src="/js/googleAuth.functions.js"></script>
+    <script type="module" src="/js/login.functions.js"></script>
 
-        <!-- Secciones centradas -->
-        <div class="collapse navbar-collapse order-1 justify-content-center" id="navbar-vn-1" style="flex: 0 0 auto;">
-            <ul class="navbar-nav mb-0">
-                <li class="nav-item text-center">
-                    <a class="nav-link navbar-vn-links" href="/">
+    <!-- NAVBAR (DESKTOP) -->
+    <nav class="hidden lg:flex sticky top-0 z-50 bg-white shadow-[0_6px_18px_rgba(0,0,0,0.08)]">
+        <div class="w-full flex items-center justify-between px-4 py-4">
+            <!-- Logo izquierda -->
+            <div class="flex-1">
+                <a href="/"><img src="/img/logo_cmdesign_iso.svg" alt="CmDesign" class="h-11"></a>
+            </div>
+
+            <!-- Secciones centradas -->
+            <ul class="flex items-center">
+                <li class="text-center mx-2.5">
+                    <a href="/"
+                        class="block text-sm uppercase font-medium text-slate-700 hover:text-green-500 transition pb-1.5 relative group">
                         <span>Camisetas</span>
-                        <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Todas las tallas</small>
+                        <small class="block text-[0.65rem] opacity-70 normal-case">Todas las tallas</small>
+                        <span
+                            class="absolute left-0 bottom-0 h-0.5 w-0 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
                     </a>
                 </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link navbar-vn-links" href="/catalogo">
+                <li class="text-center mx-2.5">
+                    <a href="/catalogo"
+                        class="block text-sm uppercase font-medium text-slate-700 hover:text-green-500 transition pb-1.5 relative group">
                         <span>Buzos</span>
-                        <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">y hoodies</small>
+                        <small class="block text-[0.65rem] opacity-70 normal-case">y hoodies</small>
+                        <span
+                            class="absolute left-0 bottom-0 h-0.5 w-0 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
                     </a>
                 </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link navbar-vn-links" href="/servicios">
+                <li class="text-center mx-2.5">
+                    <a href="/servicios"
+                        class="block text-sm uppercase font-medium text-slate-700 hover:text-green-500 transition pb-1.5 relative group">
                         <span>Nuevos</span>
-                        <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Lanzamientos</small>
+                        <small class="block text-[0.65rem] opacity-70 normal-case">Lanzamientos</small>
+                        <span
+                            class="absolute left-0 bottom-0 h-0.5 w-0 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
                     </a>
                 </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link navbar-vn-links" href="/blog">
+                <li class="text-center mx-2.5">
+                    <a href="/blog"
+                        class="block text-sm uppercase font-medium text-slate-700 hover:text-green-500 transition pb-1.5 relative group">
                         <span>Descuentos</span>
-                        <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Hasta 60% off</small>
+                        <small class="block text-[0.65rem] opacity-70 normal-case">Hasta 60% off</small>
+                        <span
+                            class="absolute left-0 bottom-0 h-0.5 w-0 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
                     </a>
                 </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link navbar-vn-links" href="/contacto">
+                <li class="text-center mx-2.5">
+                    <a href="/contacto"
+                        class="block text-sm uppercase font-medium text-slate-700 hover:text-green-500 transition pb-1.5 relative group">
                         <span>Contacto</span>
-                        <small class="d-block" style="font-size: 0.65rem; opacity: 0.7;">Tiendas</small>
+                        <small class="block text-[0.65rem] opacity-70 normal-case">Tiendas</small>
+                        <span
+                            class="absolute left-0 bottom-0 h-0.5 w-0 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
                     </a>
                 </li>
             </ul>
-        </div>
 
-        <!--Iconos derecha -->
-        <div class="d-flex align-items-center justify-content-end order-2" style="flex: 1; gap: 0.75rem;">
-            <!-- Icono de busqueda -->
-            <button id="btnSearchOpen" class="btn btn-vn-session" type="button" aria-label="Buscar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m21 21-4.34-4.34" />
-                    <circle cx="11" cy="11" r="8" />
-                </svg>
-            </button>
-            <!-- Botones de inicio de sesión y carrito -->
-            <div id="botonesSesion" class="d-flex align-items-center" style="gap: 0.5rem;">
+            <!-- Iconos derecha -->
+            <div class="flex flex-1 items-center justify-end gap-3">
+                <!-- Buscar -->
+                <button id="btnSearchOpen" type="button" aria-label="Buscar"
+                    class="p-2 text-slate-700 hover:text-green-500 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.34-4.34" />
+                    </svg>
+                </button>
 
-                <!-- Carrito de compras -->
-                <a href="/carrito"
-                    class="btn btn-vn-session d-flex align-items-center justify-content-center position-relative"
-                    aria-expanded="false" type="button">
+                <!-- Carrito -->
+                <a href="/carrito" class="relative p-2 text-slate-700 hover:text-green-500 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M16 10a4 4 0 0 1-8 0" />
@@ -83,81 +92,38 @@
                             d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
                     </svg>
                     <span id="cartCount"
-                        class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill"
-                        style="display: none;">0</span>
+                        class="absolute -top-1 -right-1 hidden h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">0</span>
                 </a>
-            </div>
-            <!-- Botón de perfil (oculto por defecto) -->
-            <button id="btnPerfil" class="btn btn-vn-session" type="button" style="display: none;">
-                <img src="/img/icon-user.svg" alt="Perfil" width="20" height="20">
-            </button>
-        </div>
-    </div>
-</nav>
 
-
-<!-- NAVBAR (MOBILE)-->
-<header class="d-lg-none py-3">
-    <div class="container d-flex justify-content-between align-items-center">
-        <!-- Espacio vacío izquierda -->
-        <div class="flex-fill">
-        </div>
-        <!-- Logo centrado -->
-        <div class="flex-fill text-center">
-            <a href="/"><img src="/img/logo_cmdesign_iso.svg" alt="Verde Nexo" height="40"></a>
-        </div>
-        <!-- Carrito derecha -->
-        <div class="flex-fill text-end">
-            <a href="/carrito" class="me-2" aria-expanded="false" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
-                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                    <path d="M3.103 6.034h17.794" />
-                    <path
-                        d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
-                </svg>
-                <span id="cartCount"
-                    class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill"
-                    style="display: none;">0</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- Buscador grande estilo tarjeta -->
-    <div class="container mt-3">
-        <form class="w-100 mobile-search" role="search" action="/buscar" method="GET">
-            <div class="input-group">
-                <input class="form-control mobile-search-input" name="q" type="search" placeholder="¿Qué buscas?"
-                    aria-label="Buscar">
-                <button class="btn mobile-search-btn input-group-text" type="submit" aria-label="Buscar"
-                    style="border: none; background: transparent;">
-                    <img src="/img/search-alt.png" alt="buscar" width="18" height="18">
+                <!-- Perfil -->
+                <button id="btnPerfil" type="button" class="hidden p-2 text-slate-700 hover:text-green-500 transition">
+                    <img src="/img/icon-user.svg" alt="Perfil" class="h-5 w-5">
                 </button>
             </div>
-        </form>
-    </div>
-</header>
+        </div>
+    </nav>
 
-<!-- Modal de Busqueda (slide down) -->
-<div id="searchModal" class="search-modal">
-    <div class="search-modal-content">
-        <div class="container py-4">
-            <div class="d-flex align-items-center gap-3">
-                <form class="flex-grow-1" role="search" action="/buscar" method="GET">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-text bg-white border-end-0">
+    <!-- Modal de Busqueda Desktop -->
+    <div id="searchModal"
+        class="fixed inset-x-0 top-0 z-1055 -translate-y-full bg-white shadow-lg transition-transform duration-300">
+        <div class="w-full px-4 py-4">
+            <div class="flex items-center gap-3">
+                <form class="flex-1" role="search" action="/buscar" method="GET">
+                    <div class="flex items-center rounded-lg border border-neutral-300 bg-white">
+                        <span class="px-4 text-neutral-500">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
-                                <path d="m21 21-4.34-4.34" />
                                 <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.34-4.34" />
                             </svg>
                         </span>
-                        <input id="searchInput" class="form-control border-start-0" name="q" type="search"
-                            placeholder="Buscar productos..." aria-label="Buscar" autofocus>
+                        <input id="searchInput" type="search" name="q" placeholder="Buscar productos..."
+                            class="flex-1 bg-transparent py-3 pr-4 text-lg text-neutral-800 placeholder-neutral-400 focus:outline-none">
                     </div>
                 </form>
-                <button id="btnSearchClose" type="button" class="btn btn-outline-secondary" aria-label="Cerrar">
+                <button id="btnSearchClose" type="button"
+                    class="rounded-lg border border-neutral-300 p-3 text-neutral-600 hover:bg-neutral-100">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 6 6 18" />
@@ -167,367 +133,222 @@
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal de Perfil -->
-<div class="modal fade" id="modalPerfil" tabindex="-1" aria-labelledby="modalPerfilLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalPerfilLabel">Perfil</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <button id="editProfileBtn" class="btn btn-primary w-100 mb-2">Editar Perfil</button>
-                <button id="logoutBtnModal" class="btn btn-danger w-100">Cerrar Sesión</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- Overlay busqueda -->
+    <div id="searchOverlay"
+        class="fixed inset-0 z-1054 bg-black/50 opacity-0 invisible transition-opacity duration-300"></div>
 
-<!-- Modal de Auth Móvil -->
-<div class="modal fade" id="modalAuthMobile" tabindex="-1" aria-labelledby="modalAuthMobileLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content" style="background: #181818; color: #fff;">
-            <div class="modal-body d-flex flex-column align-items-center justify-content-center"
-                style="min-height: 100vh; padding: 20px;">
-                <!-- Botón de atrás arriba -->
-                <div class="w-100 text-start mb-3">
-                    <button type="button" class="btn btn-link text-white p-0 modal-auth-back-btn"
-                        data-bs-dismiss="modal">
-                        <img src="https://pic.onlinewebfonts.com/thumbnails/icons_517435.svg" alt="Atrás" width="30"
-                            height="30">
-                    </button>
-                </div>
-                <!-- Logo centrado -->
-                <div class="text-center mb-4">
-                    <img src="/img/logo.svg" alt="Verde Nexo" height="60" class="logo-blanco">
-                </div>
+    <script type="module" src="/js/navbar.js"></script>
+    <script type="module" src="/js/cart.js"></script>
 
-                <!-- Formulario de Login -->
-                <div id="loginFormMobile" class="w-100" style="max-width: 340px;">
-                    <form id="loginForm" autocomplete="on">
-                        <label for="emailMobile" class="mb-1">Correo Electrónico</label>
-                        <input type="email" id="emailMobile" name="email" class="form-control mb-2"
-                            placeholder="tu@ejemplo.com" required style="height: 38px;">
-                        <label for="passwordMobile" class="mb-1">Contraseña</label>
-                        <input type="password" id="passwordMobile" name="password" class="form-control mb-2"
-                            placeholder="Ingresa tu contraseña" required style="height: 38px;">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <a href="/recuperar" class="text-success" style="font-size: 0.95rem;">¿Olvidaste tu
-                                contraseña?</a>
-                        </div>
-                        <button type="submit"
-                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2 fw-bold mb-2"
-                            style="font-size: 1rem; height: 40px;">
-                            <img src="https://pic.onlinewebfonts.com/thumbnails/icons_211161.svg?width=5&amp;config=eyJwYXRoIjpbImZmZmZmZiJdfQ=="
-                                alt="user" width="20" height="20"> Iniciar Sesión
-                        </button>
-                        <div class="divider my-3 text-center text-secondary" style="font-size: 0.95rem;">o continúa con
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <button class="google-btn-circle" id="googleAuth">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                    alt="Google">
-                            </button>
-                        </div>
-                    </form>
-                    <div class="mt-3 text-center" style="font-size: 0.97rem;">
-                        ¿No tienes cuenta? <button id="switchToRegister" class="text-success fw-bold"
-                            style="border: none; background: none;">Regístrate</button>
-                    </div>
-                </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnOpen = document.getElementById('btnSearchOpen');
+            const btnClose = document.getElementById('btnSearchClose');
+            const modal = document.getElementById('searchModal');
+            const overlay = document.getElementById('searchOverlay');
+            const searchInput = document.getElementById('searchInput');
 
-                <!-- Formulario de Register -->
-                <div id="registerFormMobile" class="w-100" style="max-width: 340px; display: none;">
-                    <form id="registerForm" autocomplete="on">
-                        <label for="usernameMobile" class="mt-1 mb-1">Nombre de Usuario</label>
-                        <input type="text" id="usernameMobile" name="username" class="form-control mb-2"
-                            placeholder="Ingresa tu nombre de usuario" required style="height: 38px;">
-                        <label for="cellphoneMobile" class="mb-1">Teléfono (Opcional)</label>
-                        <input type="tel" id="cellphoneMobile" name="cellphone" class="form-control mb-2"
-                            placeholder="(+57) 300 123 4567" style="height: 38px;">
-                        <label for="emailRegMobile" class="mb-1">Correo Electrónico</label>
-                        <input type="email" id="emailRegMobile" name="email" class="form-control mb-2"
-                            placeholder="tu@ejemplo.com" required style="height: 38px;">
-                        <label for="passwordRegMobile" class="mb-1">Contraseña *</label>
-                        <input type="password" id="passwordRegMobile" name="password" class="form-control mb-1"
-                            placeholder="Mínimo 6 caracteres" required style="height: 38px;">
-                        <small class="text-light mb-2 d-block" style="font-size: 0.97rem;">
-                            Recomendamos usar al menos 8 caracteres con mayúsculas, números y símbolos.
-                        </small>
-                        <label for="confirmPasswordMobile" class="mb-1">Confirmar Contraseña</label>
-                        <input type="password" id="confirmPasswordMobile" name="confirmPassword"
-                            class="form-control mb-2" placeholder="Confirma tu contraseña" required
-                            style="height: 38px;">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="acceptTermsMobile" name="acceptTerms"
-                                required>
-                            <label class="form-check-label" for="acceptTermsMobile" style="font-size: 0.95rem;">
-                                Acepto las <a href="#" class="text-success">políticas de privacidad</a> y
-                                <a href="#" class="text-success">términos de servicio</a> de CmDesign.
-                            </label>
-                        </div>
-                        <button type="submit"
-                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2 fw-bold mb-2"
-                            style="font-size: 1rem; height: 40px;">
-                            <img src="https://pic.onlinewebfonts.com/thumbnails/icons_330894.svg?width=5&amp;config=eyJwYXRoIjpbImZiZmJmYiIsImZiZmJmYiJdfQ=="
-                                alt="check" width="20" height="20"> Crear Cuenta
-                        </button>
-                    </form>
-                    <div class="mt-3 text-center" style="font-size: 0.97rem;">
-                        ¿Ya tienes cuenta? <button id="switchToLogin" class="text-success fw-bold"
-                            style="border: none; background: none;">Inicia Sesión</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            function openSearch() {
+                modal.classList.remove('-translate-y-full');
+                modal.classList.add('translate-y-0');
+                overlay.classList.remove('opacity-0', 'invisible');
+                overlay.classList.add('opacity-100', 'visible');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => searchInput.focus(), 300);
+            }
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script type="module" src="/js/navbar.js"></script>
-<script type="module" src="/js/cart.js"></script>
-<script type="module" src="/js/register.functions.js"></script>
+            function closeSearch() {
+                modal.classList.add('-translate-y-full');
+                modal.classList.remove('translate-y-0');
+                overlay.classList.add('opacity-0', 'invisible');
+                overlay.classList.remove('opacity-100', 'visible');
+                document.body.style.overflow = '';
+            }
 
-<style>
-    .modal-auth-back-btn {
-        transition: transform 0.2s;
-    }
-
-    .modal-auth-back-btn:hover {
-        transform: scale(1.1);
-    }
-
-    .modal-auth-back-btn img {
-        filter: brightness(0) invert(1);
-        /* Para que sea blanco si es negro */
-    }
-
-    .google-btn-circle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        transition: all 0.2s ease;
-    }
-
-    .google-btn-circle img {
-        width: 20px;
-        height: 20px;
-    }
-
-    .google-btn-circle:hover {
-        background-color: #f5f5f5;
-        transform: scale(1.05);
-    }
-
-    .logo-blanco {
-        filter: brightness(0) invert(1);
-    }
-
-    .logo-verde-pasto {
-        filter: invert(43%) sepia(83%) saturate(531%) hue-rotate(74deg) brightness(92%) contrast(88%);
-    }
-
-    /* Search Modal Styles */
-    .search-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1055;
-        transform: translateY(-100%);
-        transition: transform 0.3s ease-in-out;
-        background: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .search-modal.active {
-        transform: translateY(0);
-    }
-
-    .search-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1054;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease-in-out;
-    }
-
-    .search-modal-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .search-modal .input-group-text {
-        border-color: #ddd;
-    }
-
-    .search-modal .form-control {
-        border-color: #ddd;
-    }
-
-    .search-modal .form-control:focus {
-        box-shadow: none;
-        border-color: #000;
-    }
-</style>
-
-<!-- Overlay para el modal de busqueda -->
-<div id="searchOverlay" class="search-modal-overlay"></div>
-
-<script>
-    // Search Modal Logic
-    document.addEventListener('DOMContentLoaded', function () {
-        const btnOpen = document.getElementById('btnSearchOpen');
-        const btnClose = document.getElementById('btnSearchClose');
-        const modal = document.getElementById('searchModal');
-        const overlay = document.getElementById('searchOverlay');
-        const searchInput = document.getElementById('searchInput');
-
-        function openSearch() {
-            modal.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => searchInput.focus(), 300);
-        }
-
-        function closeSearch() {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        if (btnOpen) btnOpen.addEventListener('click', openSearch);
-        if (btnClose) btnClose.addEventListener('click', closeSearch);
-        if (overlay) overlay.addEventListener('click', closeSearch);
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeSearch();
+            if (btnOpen) btnOpen.addEventListener('click', openSearch);
+            if (btnClose) btnClose.addEventListener('click', closeSearch);
+            if (overlay) overlay.addEventListener('click', closeSearch);
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSearch(); });
         });
-    });
-</script>
+    </script>
 
-<body>
-    <div class="bg-blur"></div>
+    <!-- Background blur -->
+    <div class="fixed inset-0 z-0 bg-cover bg-center brightness-95 opacity-50 scale-110"
+        style="background-image: url('/img/login.webp');">
+    </div>
 
-    <!--Contenido-->
-    <div class="container-fluid d-flex align-items-center justify-content-center">
-        <div class="row w-100 mx-auto"
-            style="max-width:1100px; width:100%; height:80vh; min-height:600px; box-shadow:0 0 32px rgba(0,0,0,0.08); border-radius:18px; overflow:hidden; position:relative;">
+    <!-- Main Container -->
+    <div class="relative z-10 flex h-[calc(100vh-72px)] items-center justify-center p-4">
+        <div class="w-full max-w-5xl overflow-hidden rounded-2xl shadow-2xl lg:flex lg:h-[75vh] lg:min-h-[500px]">
 
-            <!-- Imagen a la izquierda (solo desktop) -->
-            <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center p-0"
-                style="background:url('/img/login.webp') bottom/cover no-repeat; position:relative; height:100%; min-height:400px;">
-                <div class="w-100 h-100 d-flex flex-column justify-content-end align-items-center text-center">
-                    <div class="d-flex flex-column align-items-center w-100 px-3 py-1"
-                        style="background:rgba(0,0,0,0.85); border-radius:12px; max-width:340px; width:100%; margin-bottom:0.5rem; display:flex; justify-content:center;">
-                        <h2 class="fw-bold mb-2" style="font-size:1.25rem; color:#f8f9fa; text-shadow:0 2px 8px #000;">
-                            Te extrañamos!</h2>
-                        <p class="mb-3" style="font-size:0.95rem; color:#f8f9fa; text-shadow:0 2px 8px #000;">Bienvenido
-                            de nuevo, accede para continuar disfrutando de nuestra comunidad sostenible.</p>
-                        <small class="mb-2 fw-bold"
-                            style="color:#f8f9fa; text-shadow:0 2px 8px #000; font-size:0.92rem;">¿No tienes una
-                            cuenta?</small>
-                        <a href="/register" class="btn btn-success px-3 py-1 d-flex align-items-center gap-2 fw-bold"
-                            style="font-size:0.97rem; min-height:32px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus-icon lucide-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+            <!-- Left Panel - Image (Desktop only) -->
+            <div class="hidden lg:flex lg:w-1/2 relative bg-cover bg-bottom"
+                style="background-image: url('/img/login.webp');">
+                <div class="flex h-full w-full flex-col items-center justify-end p-6">
+                    <div class="w-full max-w-sm rounded-xl bg-black/85 px-4 py-3 text-center">
+                        <h2 class="mb-2 text-xl font-bold text-gray-100">Te extrañamos!</h2>
+                        <p class="mb-3 text-sm text-gray-100">
+                            Bienvenido de nuevo, accede para continuar disfrutando de nuestra comunidad.
+                        </p>
+                        <p class="mb-2 text-sm font-bold text-gray-100">¿No tienes una cuenta?</p>
+                        <a href="/register"
+                            class="inline-flex items-center gap-2 rounded-lg bg-neutral-800 px-4 py-2 text-sm font-bold text-white transition hover:bg-neutral-700 border border-neutral-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <line x1="19" x2="19" y1="8" y2="14" />
+                                <line x1="22" x2="16" y1="11" y2="11" />
                             </svg>
                             Registrarse
                         </a>
                     </div>
                 </div>
             </div>
-            <!-- Formulario a la derecha -->
-            <div class="col-12 col-lg-6 p-0 d-flex flex-column justify-content-center align-items-center"
-                style="background:#181818; color:#fff; height:100%; min-height:400px;">
-                <div class="form-card w-100"
-                    style="margin:auto; padding:48px 48px; max-width:340px; height:auto; overflow-y:auto;">
-                    <h1 class="mb-2 fw-bold" style="font-size:2rem;">Iniciar Sesión</h1>
-                    <p class="mb-4" style="font-size:1.09rem;">Ingresa tus datos para acceder a CmDesign</p>
-                    <form id="loginForm" autocomplete="on" method="POST" action="/login">
-                        <label for="email" class="mb-1">Correo Electrónico</label>
-                        <input type="email" id="email" name="email" class="form-control mb-2"
-                            placeholder="tu@ejemplo.com" required style="height:38px;" autocomplete="email">
-                        <label for="password" class="mb-1">Contraseña</label>
-                        <input type="password" id="password" name="password" class="form-control mb-2"
-                            placeholder="Ingresa tu contraseña" required style="height:38px;"
-                            autocomplete="current-password">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <a href="/recuperar" class="text-success" style="font-size:0.95rem;">¿Olvidaste tu
-                                contraseña?</a>
+
+            <!-- Right Panel - Form -->
+            <div class="flex w-full flex-col bg-neutral-900 p-8 lg:w-1/2 lg:p-12">
+                <div class="w-full max-w-sm mx-auto">
+                    <!-- Botón regresar (Mobile/Tablet) -->
+                    <div class="mb-4 lg:hidden">
+                        <a href="/" class="inline-flex items-center gap-2 text-gray-400 hover:text-white transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m15 18-6-6 6-6"/>
+                            </svg>
+                            <span class="text-sm">Regresar</span>
+                        </a>
+                    </div>
+
+                    <!-- Logo (Mobile) -->
+                    <div class="mb-6 text-center lg:hidden">
+                        <a href="/">
+                            <img src="/img/logo_cmdesign_white.svg" alt="CmDesign" class="mx-auto h-12">
+                        </a>
+                    </div>
+
+                    <h1 class="mb-2 text-3xl font-bold text-white">Iniciar Sesión</h1>
+                    <p class="mb-6 text-gray-400">Ingresa tus datos para acceder a CmDesign</p>
+
+                    <form id="loginForm" autocomplete="on" method="POST" action="/login" class="space-y-4">
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="mb-1 block text-sm text-gray-300">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" required autocomplete="email"
+                                placeholder="tu@ejemplo.com"
+                                class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2.5 text-white placeholder-gray-500 focus:border-white focus:outline-none focus:ring-1 focus:ring-white">
                         </div>
+
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="mb-1 block text-sm text-gray-300">Contraseña</label>
+                            <input type="password" id="password" name="password" required
+                                autocomplete="current-password" placeholder="Ingresa tu contraseña"
+                                class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2.5 text-white placeholder-gray-500 focus:border-white focus:outline-none focus:ring-1 focus:ring-white">
+                        </div>
+
+                        <!-- Forgot Password -->
+                        <div class="text-right">
+                            <a href="/recuperar" class="text-sm text-gray-400 hover:text-white transition">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+
+                        <!-- Submit Button -->
                         <button type="submit"
-                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2 fw-bold mb-2"
-                            style="font-size:1rem; height:40px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            class="flex w-full items-center justify-center gap-2 rounded-lg bg-white py-2.5 font-bold text-neutral-900 transition hover:bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
                             Iniciar Sesión
                         </button>
-                        <div class="divider my-3 text-center text-secondary" style="font-size:0.95rem;">o continúa con
+
+                        <!-- Divider -->
+                        <div class="flex items-center gap-3">
+                            <div class="h-px flex-1 bg-neutral-700"></div>
+                            <span class="text-sm text-gray-500">o continúa con</span>
+                            <div class="h-px flex-1 bg-neutral-700"></div>
                         </div>
+
+                        <!-- Google Button -->
                         <button type="button" id="googleAuth"
-                            class="btn btn-light w-100 d-flex align-items-center justify-content-center gap-2 border mb-1 google-auth-btn"
-                            style="height:40px;">
+                            class="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-600 bg-white py-2.5 font-medium text-gray-700 transition hover:bg-gray-100">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                alt="Google" width="20" height="20"> Continuar con Google
+                                alt="Google" width="20" height="20">
+                            Continuar con Google
                         </button>
                     </form>
-                    <div class="mt-3 text-center" style="font-size:0.97rem;">
-                        ¿No tienes cuenta? <a href="/register" class="text-success fw-bold">Regístrate</a>
-                    </div>
-                </div>
-            </div>
 
-        </div>
-        <!-- Modal para 2FA -->
-        <div class="modal fade" id="twoFAModal" tabindex="-1" aria-labelledby="twoFAModalLabel">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" style="background:#181818; color:#fff;">
-                    <div class="modal-header border-secondary">
-                        <h5 class="modal-title" id="twoFAModalLabel" style="color:#fff;">Verificación de Dos Factores
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="text-center mb-3">
-                            <img src="https://pic.onlinewebfonts.com/thumbnails/icons_281692.svg" alt="2FA" width="60"
-                                height="60" class="mb-3" style="filter: brightness(0) invert(1);">
-                            <p style="color:#fff;">Ingresa el código de 6 dígitos de tu aplicación autenticadora</p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="twoFACode" class="form-label" style="color:#fff;">Código 2FA</label>
-                            <input type="text" class="form-control text-center" id="twoFACode" maxlength="6"
-                                placeholder="000000"
-                                style="font-size:1.2rem; letter-spacing:0.5rem; color:#fff; background:#222; border:1px solid #fff;">
-                        </div>
-                        <div class="text-center">
-                            <small style="color:#fff;">¿No tienes acceso a tu código? <a href="/recuperar"
-                                    class="text-success">Recupera tu cuenta</a></small>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-secondary">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            style="color:#fff; background:#333; border:1px solid #fff;">Cancelar</button>
-                        <button type="button" class="btn btn-success" onclick="verify2FA()"
-                            style="color:#fff; background:#388e3c; border:1px solid #fff;">Verificar</button>
-                    </div>
+                    <!-- Register Link -->
+                    <p class="mt-6 text-center text-sm text-gray-400">
+                        ¿No tienes cuenta?
+                        <a href="/register" class="font-bold text-white hover:text-gray-300 transition">Regístrate</a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- 2FA Modal -->
+    <div id="twoFAModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+        <div class="w-full max-w-md rounded-xl bg-neutral-900 p-6 text-white">
+            <div class="mb-4 flex items-center justify-between border-b border-neutral-700 pb-4">
+                <h5 class="text-lg font-bold">Verificación de Dos Factores</h5>
+                <button type="button" onclick="closeTwoFAModal()" class="text-gray-400 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mb-4 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="mx-auto mb-3 text-white">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <p class="text-gray-300">Ingresa el código de 6 dígitos de tu aplicación autenticadora</p>
+            </div>
+            <div class="mb-4">
+                <label for="twoFACode" class="mb-1 block text-sm text-gray-300">Código 2FA</label>
+                <input type="text" id="twoFACode" maxlength="6" placeholder="000000"
+                    class="w-full rounded-lg border border-neutral-600 bg-neutral-800 px-4 py-3 text-center text-xl tracking-widest text-white placeholder-gray-500 focus:border-white focus:outline-none">
+            </div>
+            <p class="mb-4 text-center text-sm text-gray-400">
+                ¿No tienes acceso a tu código?
+                <a href="/recuperar" class="text-white hover:text-gray-300 transition">Recupera tu cuenta</a>
+            </p>
+            <div class="flex gap-3">
+                <button type="button" onclick="closeTwoFAModal()"
+                    class="flex-1 rounded-lg border border-neutral-600 py-2.5 text-white transition hover:bg-neutral-800">
+                    Cancelar
+                </button>
+                <button type="button" onclick="verify2FA()"
+                    class="flex-1 rounded-lg bg-white py-2.5 font-bold text-neutral-900 transition hover:bg-gray-200">
+                    Verificar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeTwoFAModal() {
+            document.getElementById('twoFAModal').classList.add('hidden');
+            document.getElementById('twoFAModal').classList.remove('flex');
+        }
+
+        function openTwoFAModal() {
+            document.getElementById('twoFAModal').classList.remove('hidden');
+            document.getElementById('twoFAModal').classList.add('flex');
+        }
+    </script>
 </body>
 
 </html>
-
-<%- include('../partials/footer') %>
