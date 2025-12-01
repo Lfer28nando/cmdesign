@@ -1559,7 +1559,7 @@ export const crearPreferenciaPago = async (req, res, next) => {
         auto_return: 'approved',
         external_reference: safePedidoId,
         notification_url: `${backendUrl}/api/webhooks/mercadopago`,
-        statement_descriptor: 'VerdeNexo - Compra en línea'
+        statement_descriptor: 'Cmdesign - Compra en línea'
       };
     // Log obligatorio para depuración
     console.log('DEBUG MP - back_urls.success:', preferenceData.back_urls.success);

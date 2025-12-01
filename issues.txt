@@ -1,0 +1,211 @@
+✅ LO QUE ESTÁ BIEN
+🏗️ Arquitectura
+Separación de capas clara: Controllers/Models/Routes/Middlewares bien organizados
+ES Modules modernos: Uso consistente de import/export
+Sistema de errores robusto: [customError.js]customError.js ) + errorCodes.js + middleware centralizado
+Validaciones con Zod: Schemas tipados en [auth.schema.js]auth.schema.js )
+Rate limiting: Implementado en rateLimiter.middleware.js
+🔐 Seguridad Básica Implementada
+bcrypt para hashing de contraseñas (10 rounds)
+JWT con cookies HTTPOnly ([auth.controller.js:42-46]auth.controller.js ))
+CORS configurado con whitelist de orígenes ([app.js:53-71]app.js ))
+2FA con TOTP (Speakeasy + QR codes)
+Session store en MongoDB ([app.js:86-96]app.js ))
+API Key middleware para rutas sensibles
+🗄️ Base de Datos
+Schemas Mongoose bien definidos con validaciones
+Población de referencias (.populate())
+Métodos de instancia útiles ([invoice.model.js:200-207]invoice.model.js ))
+📝 Manejo de Errores
+ErrorHandler centralizado ([errorHandler.middleware.js]errorHandler.middleware.js ))
+Conversión automática de errores de MongoDB/JWT a formato estándar
+Logs estructurados con nivel de detalle según entorno
+❌ LO QUE ESTÁ MAL (Deuda Técnica Crítica)
+🚨 Arquitectura y Escalabilidad
+[checkout.controller.js]checkout.controller.js ): 1705 líneas - CONTROLADOR MONSTRUOSO
+
+
+// Viola SRP brutalmente. Contiene:// - Creación de pedidos// - Integración con Mercado Pago// - Cálculo de envíos// - Gestión de facturas// - Webhooks// - Reportes de ventas// -> Imposible de testear, mantener o escalar
+Impacto: Cambios en una funcionalidad rompen otras. Tests unitarios imposibles. Onboarding lento.
+Fix: Dividir en: PedidoService, MercadoPagoService, EnvioService, FacturaService.
+
+[Múltiples archivos]: Inconsistencia de respuestas API
+
+
+// auth.controller.js:55res.json({ success: true, message: '...', user: {...} });// checkout.controller.js:428res.json({ ok: true, data: {...} });// shopCar.controller.js:130res.json({ success: false, error: {...} });
+Impacto: Frontend debe manejar 3 formatos. Bugs sutiles. Confusión en equipo.
+Fix: Estandarizar en middleware/responseFormatter.js:
+
+
+res.success(data, message); // Siempre { success: true, data, message }res.error(error); // Siempre { success: false, error: {...} }
+[app.js:103-106]app.js ): Middleware de res.locals mal ubicado
+
+
+// Esto debería ir ANTES de las rutas web, no después de configurar sesionesapp.use((req, res, next) => {    res.locals.BACKEND_URL = process.env.BACKEND_URL || '';    res.locals.user = req.user || null;    next();});
+Impacto: req.user puede estar undefined si el auth middleware no corrió primero.
+Fix: Mover después de session config y antes de rutas.
+
+🐛 Validaciones y Lógica de Negocio
+[auth.schema.js:13]auth.schema.js ): Validación de password débil
+
+
+password: z.string().min(6, 'Password must be at least 6 characters long')// No valida: mayúsculas, minúsculas, números, caracteres especiales
+Impacto: Passwords como "123456" o "aaaaaa" son válidos -> Cuentas hackeadas fácilmente.
+Fix:
+
+
+password: z.string()  .min(8)  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,     'Password must contain uppercase, lowercase, number and special character')
+[checkout.controller.js:57-63]checkout.controller.js ): Validación de teléfono inconsistente
+
+
+const telefonoRegex = /^(\+57|57)?[0-9]{10}$/;// NO valida formato real colombiano (operadoras, dígitos válidos)
+Impacto: Números falsos pasan (57999999999). SMS/WhatsApp fallan.
+Fix: Usar librería libphonenumber-js:
+
+
+import { parsePhoneNumber } from 'libphonenumber-js';const phone = parsePhoneNumber(telefono, 'CO');if (!phone.isValid()) throw Error('...');
+[shopCar.controller.js:38-41]shopCar.controller.js ): Validación de disponibilidad superficial
+
+
+if (!producto.disponibilidad) {    throw createError('VAL_NO_FIELDS_TO_UPDATE');}// NO verifica stock real
+Impacto: Agregar 1000 unidades al carrito cuando solo hay 5 en stock.
+Fix:
+
+
+if (!producto.disponibilidad || producto.stock < cantidad) {    throw createError('PROD_OUT_OF_STOCK', { disponible: producto.stock });}
+[checkout.controller.js:935-947]checkout.controller.js ): parseInt() sin validación de NaN
+
+
+const limite = parseInt(req.query.limite) || 10;// Si limite = "abc", parseInt retorna NaN, luego || 10 funciona// Pero genera logs de error innecesarios
+Impacto: Performance leve (logs), confusión en debugging.
+Fix:
+
+
+const limite = Number.isInteger(parseInt(req.query.limite))   ? parseInt(req.query.limite)   : 10;
+🔒 Riesgos de Seguridad
+CRÍTICO [auth.controller.js:73-88]auth.controller.js ): Login sin verificar email
+
+
+const userFound = await User.findOne({ email: email.toLowerCase().trim() });if (!userFound) throw createError('AUTH_USER_NOT_FOUND');// ❌ FALTA: if (!userFound.verifiedEmail) throw createError('AUTH_EMAIL_NOT_VERIFIED');userFound.lastLogin = new Date();await userFound.save();
+Impacto: Usuarios pueden operar sin verificar email -> Cuentas falsas, spam, fraude.
+Fix: Agregar validación obligatoria antes de generar token.
+
+CRÍTICO [config.js:5]config.js ): Access Token hardcodeado (o sin validar)
+
+
+accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN// Si .env no existe o está vacío -> `undefined`
+Impacto: Mercado Pago falla silenciosamente. Pagos no se procesan.
+Fix:
+
+
+if (!process.env.MERCADO_PAGO_ACCESS_TOKEN) {  throw new Error('MERCADO_PAGO_ACCESS_TOKEN is required');}
+MEDIO [validateToken.middleware.js:14-17]validateToken.middleware.js ): Token sin validación de expiración
+
+
+const payload = jwt.verify(token, process.env.JWT_SECRET);if (payload) {  return res.redirect('/');}
+Impacto: JWT.verify puede lanzar excepción si el token está mal formado -> crash.
+Fix: Wrap en try/catch como en authRequired.
+
+MEDIO [Múltiples archivos]: Secrets en variables de entorno sin validar
+
+
+// JWT_SECRET, SESSION_SECRET, EMAIL_USER, etc. pueden ser undefined
+Impacto: App arranca pero falla en runtime al intentar firmar tokens.
+Fix: Validar en [index.js]index.js ) antes de levantar servidor:
+
+
+const requiredEnvVars = ['JWT_SECRET', 'MONGODB_URI', 'SESSION_SECRET'];for (const envVar of requiredEnvVars) {  if (!process.env[envVar]) {    console.error(`❌ Missing required env var: ${envVar}`);    process.exit(1);  }}
+🐌 Performance y Escalabilidad
+CRÍTICO [Múltiples controladores]: Queries sin paginación
+
+
+// checkout.controller.js líneas con .find() sin limitawait Pedido.find(filtro).populate('items.productoId');// Puede retornar 10,000+ documentos
+Impacto: OOM (Out of Memory) en producción con +1000 pedidos.
+Fix: Forzar paginación siempre:
+
+
+const page = Math.max(1, parseInt(req.query.page) || 1);const limit = Math.min(100, Math.max(10, parseInt(req.query.limit) || 20));await Pedido.find(filtro).limit(limit).skip((page - 1) * limit);
+MEDIO [user.model.js:12-25]user.model.js ): Objeto anidado sin validación de tamaño
+
+
+informacionVendedor: {  porcentajeComision: { type: Number, default: 5.0 },  // ...muchos campos}// NO hay límite de cuántos vendedores activos
+Impacto: Vendedores maliciosos pueden crear documentos gigantes.
+Fix: Validar en pre-save hook:
+
+
+userSchema.pre('save', function() {  if (this.informacionVendedor && this.role !== 'seller') {    this.informacionVendedor = undefined;  }});
+🧩 Código Sucio
+[index.js:12-19]index.js ): Try/catch vacío
+
+
+try {  await connectDB();  console.log('✅ MongoDB connected');} catch (err) {  console.error('⚠️ MongoDB connection failed:', err?.message || err);  // NO hay process.exit(1) ni reintentos}
+Impacto: App arranca sin DB. Todas las operaciones fallan silenciosamente.
+Fix: Agregar process.exit(1) o implementar retry con exponential backoff.
+
+[app.js:28]app.js ): Import de googleAuth.js sin usar
+
+
+import './config/googleAuth.js'; // Side-effect import. ¿Qué hace? ¿Es necesario?
+Impacto: Confusión. Posible config de Passport que debería estar explícita.
+Fix: Explicitar:
+
+
+import { initializeGoogleAuth } from './config/googleAuth.js';initializeGoogleAuth(app);
+🛡️ RIESGOS DE SEGURIDAD (Críticos y Medios)
+🔴 CRÍTICOS (Acción Inmediata)
+Login sin verificar email ([auth.controller.js:73]auth.controller.js ))
+
+Riesgo: Cuentas no verificadas operando. Registro masivo de bots.
+Fix: if (!userFound.verifiedEmail) throw createError('AUTH_EMAIL_NOT_VERIFIED');
+Secrets sin validar al arranque (Múltiples archivos)
+
+Riesgo: App arranca corrupta. JWT/Sessions fallan en runtime.
+Fix: Validar en [index.js]index.js ) antes de app.listen().
+Passwords débiles ([auth.schema.js:13]auth.schema.js ))
+
+Riesgo: Cuentas comprometidas fácilmente.
+Fix: Regex con mayúsculas + minúsculas + números + especiales.
+🟡 MEDIOS (Corregir en Sprint Actual)
+No validar stock real ([shopCar.controller.js:38]shopCar.controller.js ))
+
+Riesgo: Overselling. Clientes compran productos sin stock.
+Fix: Verificar producto.stock >= cantidad antes de agregar al carrito.
+Token de Mercado Pago sin validar ([config.js:5]config.js ))
+
+Riesgo: Pagos fallan silenciosamente.
+Fix: Throw error si process.env.MERCADO_PAGO_ACCESS_TOKEN está vacío.
+CORS misconfiguration potencial ([app.js:53-71]app.js ))
+
+Riesgo: Si ALLOWED_ORIGINS vacío, acepta cualquier origen.
+Fix: Validar que allowedOrigins.length > 0 o usar default seguro.
+⚪ BAJOS (Deuda Técnica)
+Queries sin paginación (Múltiples controladores)
+
+Riesgo: OOM en producción con +1000 registros.
+Fix: Forzar paginación siempre con límite máximo 100.
+Validación de teléfono superficial ([checkout.controller.js:57]checkout.controller.js ))
+
+Riesgo: SMS/WhatsApp fallan. UX degradada.
+Fix: Usar libphonenumber-js.
+🎯 RECOMENDACIONES URGENTES
+🔥 Hoy (Crítico)
+Agregar validación de verifiedEmail en login
+Validar env vars al arranque (JWT_SECRET, MONGODB_URI, etc.)
+Mejorar regex de password a 8+ chars con complejidad
+📅 Esta Semana
+Estandarizar respuestas API (success/error format)
+Refactorizar [checkout.controller.js]checkout.controller.js ) en servicios separados
+Agregar validación de stock real en carrito
+🗓️ Este Sprint
+Implementar paginación forzada en todos los .find()
+Agregar tests unitarios para lógica de negocio crítica
+Documentar API con Swagger/OpenAPI
+📈 MÉTRICAS DE CALIDAD
+Categoría	Puntaje	Justificación
+Arquitectura	7/10	Buena separación de capas, pero controladores masivos
+Seguridad	6/10	Fundamentos OK, pero gaps críticos (email, passwords)
+Performance	5/10	Sin paginación, queries ineficientes
+Mantenibilidad	6/10	Código limpio pero inconsistente
+Testabilidad	4/10	Servicios acoplados, lógica en controladores
+TOTAL	68/100	Funcional pero necesita refactor para producción
+Conclusión: El código tiene una base sólida pero necesita refactorización urgente en seguridad y escalabilidad antes de producción. Prioriza los fixes críticos de seguridad (email verification, password strength) esta semana.

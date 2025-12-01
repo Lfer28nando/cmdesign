@@ -1,0 +1,221 @@
+<%- include('../partials/header') %>
+<link rel="stylesheet" href="/css/producto.styles.css">
+
+<main class="pdp-main">
+  <!-- Breadcrumb -->
+  <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/catalogo" id="breadcrumbCategory">Catálogo</a></li>
+      <li><span id="breadcrumbProduct" aria-current="page">Cargando...</span></li>
+    </ol>
+  </nav>
+
+  <!-- Contenedor Principal -->
+  <div class="pdp-container">
+    <!-- COLUMNA IZQUIERDA: Galería -->
+    <section class="pdp-gallery">
+      <!-- Badge de descuento -->
+      <div class="pdp-badge-discount" id="badgeDiscount" style="display:none;">
+        <span id="discountText">-30%</span>
+      </div>
+      
+      <!-- Imagen Principal -->
+      <div class="pdp-main-image">
+        <img id="mainImage" src="https://placehold.co/600x700/f5f5f5/999?text=Cargando" alt="Producto">
+        <!-- Navegación de imagen -->
+        <button class="pdp-nav-btn pdp-nav-prev" id="prevImage" aria-label="Imagen anterior">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <button class="pdp-nav-btn pdp-nav-next" id="nextImage" aria-label="Imagen siguiente">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Thumbnails -->
+      <div class="pdp-thumbnails" id="thumbnailsContainer">
+        <!-- Se llenan dinámicamente -->
+      </div>
+    </section>
+
+    <!-- COLUMNA DERECHA: Info del Producto -->
+    <section class="pdp-info">
+      <!-- Marca -->
+      <p class="pdp-brand" id="productBrand">MARCA</p>
+      
+      <!-- Nombre -->
+      <h1 class="pdp-title" id="productName">Cargando producto...</h1>
+      
+      <!-- Rating -->
+      <div class="pdp-rating" id="ratingContainer">
+        <div class="pdp-stars" id="productStars"></div>
+        <span class="pdp-rating-count" id="ratingCount">0 opiniones</span>
+      </div>
+      
+      <!-- Precios -->
+      <div class="pdp-prices">
+        <span class="pdp-price-original" id="priceOriginal"></span>
+        <span class="pdp-price-current" id="priceCurrent">$0</span>
+        <span class="pdp-price-discount" id="priceDiscountBadge" style="display:none;">-0%</span>
+        <span class="pdp-price-promo" id="promoTag" style="display:none;">CYBER DAYS</span>
+      </div>
+      
+      <!-- Selector de Talla/Variante -->
+      <div class="pdp-variants" id="variantsSection" style="display:none;">
+        <p class="pdp-variants-label">Talla: <span id="selectedVariant">-</span></p>
+        <div class="pdp-variants-grid" id="variantsGrid">
+          <!-- Se llenan dinámicamente -->
+        </div>
+        <a href="#" class="pdp-size-guide">Guía de tallas</a>
+      </div>
+      
+      <!-- Selector de Cantidad -->
+      <div class="pdp-quantity">
+        <button class="pdp-qty-btn" id="qtyMinus" aria-label="Reducir cantidad">−</button>
+        <input type="number" id="qtyInput" value="1" min="1" max="10" readonly>
+        <button class="pdp-qty-btn" id="qtyPlus" aria-label="Aumentar cantidad">+</button>
+        <button class="pdp-wishlist-btn" id="wishlistBtn" aria-label="Agregar a favoritos">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Botón Agregar al Carrito -->
+      <button class="pdp-add-cart" id="addToCartBtn">
+        AGREGAR A MI BOLSA
+      </button>
+      
+      <!-- Trust Icons -->
+      <div class="pdp-trust-icons">
+        <div class="pdp-trust-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
+          <div>
+            <strong>Compra hoy</strong> y Paga en febrero <a href="#">Solicita tu crédito</a>
+          </div>
+        </div>
+        <div class="pdp-trust-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          <div><strong>Paga con Addi</strong> en hasta 4 cuotas</div>
+        </div>
+        <div class="pdp-trust-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+          </svg>
+          <div><strong>0% interés</strong> hasta 36 cuotas Mercado pago</div>
+        </div>
+        <div class="pdp-trust-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <div><strong>Pago seguro</strong> con Nequi</div>
+        </div>
+      </div>
+      
+      <!-- Descripción del Producto -->
+      <div class="pdp-accordion">
+        <details open>
+          <summary>Descripción de producto</summary>
+          <div class="pdp-accordion-content" id="productDescription">
+            Cargando descripción...
+          </div>
+        </details>
+        
+        <details>
+          <summary>Especificaciones</summary>
+          <div class="pdp-accordion-content" id="productSpecs">
+            <ul id="specsList"></ul>
+          </div>
+        </details>
+        
+        <details>
+          <summary>Composición</summary>
+          <div class="pdp-accordion-content" id="productComposition">
+            100% Algodón
+          </div>
+        </details>
+        
+        <details>
+          <summary>Cuidados</summary>
+          <div class="pdp-accordion-content">
+            <ul>
+              <li>Lavar a máquina máx. 30°C</li>
+              <li>No usar blanqueador</li>
+              <li>Planchar a temperatura baja</li>
+              <li>No lavar en seco</li>
+            </ul>
+          </div>
+        </details>
+        
+        <details>
+          <summary>Descubre más</summary>
+          <div class="pdp-accordion-content">
+            <p>Visita nuestra <a href="/catalogo">colección completa</a> para más opciones.</p>
+          </div>
+        </details>
+      </div>
+      
+      <!-- Compartir y SKU -->
+      <div class="pdp-share">
+        <span>Compartir:</span>
+        <button class="pdp-share-btn" aria-label="Compartir en Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </button>
+        <button class="pdp-share-btn" aria-label="Compartir en WhatsApp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        </button>
+        <span class="pdp-sku">Ref: <span id="productSku">-</span></span>
+      </div>
+      
+      <!-- Info de envío gratis -->
+      <div class="pdp-shipping-info">
+        <div class="pdp-shipping-item">
+          <span class="pdp-shipping-icon">📦</span>
+          <div>
+            <strong>Licencias originales</strong>
+          </div>
+        </div>
+        <div class="pdp-shipping-item">
+          <span class="pdp-shipping-icon">✅</span>
+          <div>
+            <strong>Pago 100% seguro</strong>
+          </div>
+        </div>
+        <div class="pdp-shipping-item">
+          <span class="pdp-shipping-icon">🚚</span>
+          <div>
+            <strong>Envío gratis</strong>
+            <small>desde $150.000</small>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SECCIÓN: Complementos Ideales (Productos Relacionados) -->
+  <section class="pdp-section pdp-related" id="relatedSection" style="display:none;">
+    <h2 class="pdp-section-title">LOS COMPLEMENTOS IDEALES 🎁</h2>
+    <div class="pdp-products-grid" id="relatedProducts">
+      <!-- Se llenan dinámicamente -->
+    </div>
+  </section>
+
+  <!-- SECCIÓN: Descubre más opciones (Misma categoría) -->
+  <section class="pdp-section pdp-discover" id="discoverSection" style="display:none;">
+    <h2 class="pdp-section-title">¡DESCUBRE AÚN MÁS OPCIONES! 🌟</h2>
+    <div class="pdp-products-grid" id="discoverProducts">
+      <!-- Se llenan dinámicamente -->
+    </div>
+  </section>
+</main>
+
+<script type="module" src="/js/producto.js"></script>
+<%- include('../partials/footer') %>

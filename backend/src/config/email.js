@@ -20,7 +20,7 @@ export const sendPasswordResetEmail = async (email, resetCode) => {
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to: email,
-      subject: 'VerdeNexo- Código de Verificación - Restablecer Contraseña',
+      subject: 'CmDesign- Código de Verificación - Restablecer Contraseña',
       html: `
         <!DOCTYPE html>
         <html lang="es">
@@ -40,7 +40,7 @@ export const sendPasswordResetEmail = async (email, resetCode) => {
                   <tr>
                     <td style="background: linear-gradient(135deg, #497458ff 0%, #65a373 50%, #4ade80 100%); padding: 50px 30px; text-align: center;">
                       <h1 style="margin: 0 0 15px; color: #1f2937; font-size: 42px; font-weight: 700; letter-spacing: -1px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                        VerdeNexo
+                        CmDesign
                       </h1>
                       <h2 style="margin: 0; color: #000000ff; font-size: 24px; font-weight: 500; letter-spacing: -0.3px;">
                         Código de Verificación
@@ -109,7 +109,7 @@ export const sendPasswordResetEmail = async (email, resetCode) => {
                       
                       <div style="border-top: 1px solid #e5f3e8; padding-top: 20px;">
                         <p style="margin: 0; color: #6b7280; font-size: 12px; font-weight: 500;">
-                          © 2025 VerdeNexo. Todos los derechos reservados.<br>
+                          © 2025 CmDesign. Todos los derechos reservados.<br>
                           Este es un email automático, no responder.
                         </p>
                       </div>
@@ -139,7 +139,7 @@ export const sendEmailVerificationCode = async (email, verificationCode, usernam
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to: email,
-      subject: 'VerdeNexo - Verifica tu Cuenta - Código de Activación',
+      subject: 'CmDesign - Verifica tu Cuenta - Código de Activación',
       html: `
         <!DOCTYPE html>
         <html lang="es">
@@ -159,7 +159,7 @@ export const sendEmailVerificationCode = async (email, verificationCode, usernam
                   <tr>
                     <td style="background: linear-gradient(135deg, #497458ff 0%, #65a373 50%, #4ade80 100%); padding: 50px 30px; text-align: center;">
                       <h1 style="margin: 0 0 15px; color: #1f2937; font-size: 42px; font-weight: 700; letter-spacing: -1px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                        VerdeNexo
+                        CmDesign
                       </h1>
                       <h2 style="margin: 0; color: #000000ff; font-size: 24px; font-weight: 500; letter-spacing: -0.3px;">
                         Activa tu Cuenta
@@ -178,7 +178,7 @@ export const sendEmailVerificationCode = async (email, verificationCode, usernam
                           ¡Hola ${username}! 🎉
                         </h2>
                         <p style="margin: 0; color: #374151; font-size: 16px; line-height: 1.6; font-weight: 500;">
-                          ¡Gracias por registrarte en VerdeNexo! Para activar tu cuenta y comenzar a disfrutar de nuestros servicios, usa el siguiente código de verificación:
+                          ¡Gracias por registrarte en CmDesign! Para activar tu cuenta y comenzar a disfrutar de nuestros servicios, usa el siguiente código de verificación:
                         </p>
                       </div>
                       
@@ -233,7 +233,7 @@ export const sendEmailVerificationCode = async (email, verificationCode, usernam
                           🔒 <strong>Medidas de Seguridad:</strong>
                         </p>
                         <p style="margin: 0; color: #4b5563; font-size: 13px; line-height: 1.5; font-weight: 500;">
-                          • Si no te registraste en VerdeNexo, ignora este email<br>
+                          • Si no te registraste en CmDesign, ignora este email<br>
                           • Nunca compartas este código con nadie<br>
                           • El código expira automáticamente en 24 horas
                         </p>
@@ -241,7 +241,7 @@ export const sendEmailVerificationCode = async (email, verificationCode, usernam
                       
                       <div style="border-top: 1px solid #e5f3e8; padding-top: 20px;">
                         <p style="margin: 0; color: #6b7280; font-size: 12px; font-weight: 500;">
-                          © 2025 VerdeNexo. Todos los derechos reservados.<br>
+                          © 2025 CmDesign. Todos los derechos reservados.<br>
                           Este es un email automático, no responder.
                         </p>
                       </div>
@@ -271,7 +271,7 @@ export const sendEmailChangeNotification = async (email, confirmationToken, user
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to: email,
-      subject: 'VerdeNexo - Confirma tu Nuevo Email - Cambio de Dirección',
+      subject: 'CmDesign - Confirma tu Nuevo Email - Cambio de Dirección',
       html: `
         <!DOCTYPE html>
         <html lang="es">
@@ -291,7 +291,7 @@ export const sendEmailChangeNotification = async (email, confirmationToken, user
                   <tr>
                     <td style="background: linear-gradient(135deg, #497458ff 0%, #65a373 50%, #4ade80 100%); padding: 50px 30px; text-align: center;">
                       <h1 style="margin: 0 0 15px; color: #1f2937; font-size: 42px; font-weight: 700; letter-spacing: -1px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                        VerdeNexo
+                        CmDesign
                       </h1>
                       <h2 style="margin: 0; color: #000000ff; font-size: 24px; font-weight: 500; letter-spacing: -0.3px;">
                         Confirma tu Nuevo Email
@@ -310,7 +310,7 @@ export const sendEmailChangeNotification = async (email, confirmationToken, user
                           ¡Hola ${username}! 📧
                         </h2>
                         <p style="margin: 0; color: #374151; font-size: 16px; line-height: 1.6; font-weight: 500;">
-                          Has solicitado cambiar tu dirección de email en VerdeNexo. Para confirmar este cambio y activar tu nueva dirección, usa el siguiente código de confirmación:
+                          Has solicitado cambiar tu dirección de email en CmDesign. Para confirmar este cambio y activar tu nueva dirección, usa el siguiente código de confirmación:
                         </p>
                       </div>
                       
@@ -373,7 +373,7 @@ export const sendEmailChangeNotification = async (email, confirmationToken, user
                       
                       <div style="border-top: 1px solid #e5f3e8; padding-top: 20px;">
                         <p style="margin: 0; color: #6b7280; font-size: 12px; font-weight: 500;">
-                          © 2025 VerdeNexo. Todos los derechos reservados.<br>
+                          © 2025 CmDesign. Todos los derechos reservados.<br>
                           Este es un email automático, no responder.
                         </p>
                       </div>

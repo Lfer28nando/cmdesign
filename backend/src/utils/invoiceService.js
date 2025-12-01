@@ -8,11 +8,11 @@ import { createError } from './customError.js';
  * Configuración de la empresa emisora
  */
 const CONFIG_EMPRESA = {
-  nombreEmpresa: 'VerdeNexo S.A.S.',
+  nombreEmpresa: 'CmDesign',
   nit: '901.234.567-8',
   direccion: 'Calle 123 #45-67, Bogotá, Colombia',
   telefono: '+57 300 123 4567',
-  email: 'facturacion@verdenexo.com',
+  email: 'facturacion@cmdesign.com',
   regimenTributario: 'comun'
 };
 

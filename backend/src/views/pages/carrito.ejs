@@ -1,0 +1,197 @@
+<%- include('../partials/header') %>
+<link rel="stylesheet" href="/css/carrito.styles.css">
+
+<main class="cart-main">
+  <!-- Barra de Envío Gratis -->
+  <div class="cart-free-shipping-bar">
+    <div class="cart-free-shipping-content">
+      <div class="cart-free-shipping-progress">
+        <div class="cart-free-shipping-fill" id="freeShippingFill" style="width: 0%"></div>
+      </div>
+      <p class="cart-free-shipping-text" id="freeShippingText">
+        <span class="cart-free-shipping-icon">🚚</span>
+        <span id="freeShippingMessage">Agrega productos para obtener envío gratis</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="cart-container">
+    <!-- COLUMNA IZQUIERDA: Productos -->
+    <section class="cart-products">
+      <div class="cart-products-header">
+        <h1 class="cart-title">Mi Bolsa <span id="cartItemCount">(0)</span></h1>
+        <a href="/catalogo" class="cart-continue-link">Seguir comprando →</a>
+      </div>
+
+      <!-- Lista de Items -->
+      <div class="cart-items-list" id="cartItemsList">
+        <!-- Items se cargan dinámicamente -->
+        <div class="cart-loading" id="cartLoading">
+          <div class="cart-spinner"></div>
+          <p>Cargando tu carrito...</p>
+        </div>
+      </div>
+
+      <!-- Carrito Vacío -->
+      <div class="cart-empty" id="cartEmpty" style="display: none;">
+        <div class="cart-empty-icon">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+            <path d="M3.103 6.034h17.794"/>
+            <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
+          </svg>
+        </div>
+        <h2>Tu bolsa está vacía</h2>
+        <p>Agrega productos increíbles a tu carrito</p>
+        <a href="/catalogo" class="cart-btn-primary">Explorar catálogo</a>
+      </div>
+
+      <!-- Sección: Productos Sugeridos -->
+      <section class="cart-suggestions" id="cartSuggestions" style="display: none;">
+        <h2 class="cart-section-title">COMPLETA TU LOOK ✨</h2>
+        <div class="cart-suggestions-grid" id="suggestionsGrid">
+          <!-- Productos sugeridos se cargan dinámicamente -->
+        </div>
+      </section>
+    </section>
+
+    <!-- COLUMNA DERECHA: Resumen -->
+    <aside class="cart-summary">
+      <h2 class="cart-summary-title">Resumen del pedido</h2>
+
+      <!-- Cupón de Descuento -->
+      <div class="cart-coupon-section">
+        <div class="cart-coupon-header" id="couponToggle">
+          <span>🏷️ ¿Tienes un cupón?</span>
+          <svg class="cart-coupon-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </div>
+        <div class="cart-coupon-body" id="couponBody" style="display: none;">
+          <div class="cart-coupon-input-group">
+            <input type="text" id="couponInput" class="cart-coupon-input" placeholder="Ingresa tu código" maxlength="20">
+            <button id="applyCouponBtn" class="cart-coupon-btn">Aplicar</button>
+          </div>
+          <div class="cart-coupon-applied" id="couponApplied" style="display: none;">
+            <span class="cart-coupon-tag">
+              <span id="couponName">DESCUENTO</span>
+              <button id="removeCouponBtn" class="cart-coupon-remove">×</button>
+            </span>
+            <span class="cart-coupon-discount" id="couponDiscount">-$0</span>
+          </div>
+          <p class="cart-coupon-error" id="couponError" style="display: none;"></p>
+        </div>
+      </div>
+
+      <!-- Estimación de Envío -->
+      <div class="cart-shipping-section">
+        <div class="cart-shipping-header">
+          <span>📦 Estimación de envío</span>
+        </div>
+        <div class="cart-shipping-body">
+          <select id="shippingCity" class="cart-shipping-select">
+            <option value="">Selecciona tu ciudad</option>
+            <option value="medellin">Medellín y área metropolitana</option>
+            <option value="bogota">Bogotá</option>
+            <option value="cali">Cali</option>
+            <option value="barranquilla">Barranquilla</option>
+            <option value="otra">Otra ciudad</option>
+          </select>
+          <div class="cart-shipping-result" id="shippingResult" style="display: none;">
+            <div class="cart-shipping-option">
+              <div>
+                <strong id="shippingName">Envío estándar</strong>
+                <small id="shippingTime">3-5 días hábiles</small>
+              </div>
+              <span class="cart-shipping-price" id="shippingPrice">$0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Totales -->
+      <div class="cart-totals">
+        <div class="cart-total-row">
+          <span>Subtotal</span>
+          <span id="subtotalAmount">$0</span>
+        </div>
+        <div class="cart-total-row cart-discount-row" id="discountRow" style="display: none;">
+          <span>Descuento</span>
+          <span class="cart-discount-value" id="discountAmount">-$0</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Envío</span>
+          <span id="shippingAmount">Por calcular</span>
+        </div>
+        <div class="cart-total-row cart-total-final">
+          <span>Total</span>
+          <span id="totalAmount">$0</span>
+        </div>
+        <small class="cart-iva-note">*IVA incluido</small>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="cart-actions">
+        <button id="checkoutBtn" class="cart-btn-checkout" disabled>
+          FINALIZAR COMPRA
+        </button>
+        <div class="cart-payment-methods">
+          <span>Pago seguro con:</span>
+          <div class="cart-payment-icons">
+            <img src="https://www.mercadopago.com/org-img/MP3/home/logomp3.gif" alt="Mercado Pago" height="20">
+            <span>💳</span>
+            <span>🏦</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="cart-trust-badges">
+        <div class="cart-trust-item">
+          <span>🔒</span>
+          <span>Compra 100% segura</span>
+        </div>
+        <div class="cart-trust-item">
+          <span>↩️</span>
+          <span>Devolución fácil</span>
+        </div>
+        <div class="cart-trust-item">
+          <span>📞</span>
+          <span>Soporte 24/7</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- Modal de Edición de Variante -->
+<div class="cart-modal-overlay" id="variantModal" style="display: none;">
+  <div class="cart-modal">
+    <div class="cart-modal-header">
+      <h3>Cambiar talla</h3>
+      <button class="cart-modal-close" id="closeVariantModal">×</button>
+    </div>
+    <div class="cart-modal-body">
+      <div class="cart-modal-product" id="modalProductInfo">
+        <!-- Info del producto -->
+      </div>
+      <div class="cart-modal-variants">
+        <p class="cart-modal-label">Selecciona talla:</p>
+        <div class="cart-modal-variants-grid" id="modalVariantsGrid">
+          <!-- Variantes -->
+        </div>
+      </div>
+    </div>
+    <div class="cart-modal-footer">
+      <button class="cart-btn-secondary" id="cancelVariantBtn">Cancelar</button>
+      <button class="cart-btn-primary" id="confirmVariantBtn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="cart-toast" id="cartToast"></div>
+
+<script src="/js/carrito.functions.js"></script>
+<%- include('../partials/footer') %></content>
+<parameter name="filePath">c:\Users\Usuario\verdeNexo-develop\verdeNexo-develop\frontend\src\views\pages\carrito.ejs

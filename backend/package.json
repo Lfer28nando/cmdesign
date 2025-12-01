@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "verdenexo",
+    "CmDesign",
     "authentication",
     "nodejs",
     "express",
@@ -20,11 +20,11 @@
     "backend",
     "api"
   ],
-  "author": "VerdeNexo Team",
+  "author": "CmDesign Team",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/verdenexo/backend-auth.git"
+    "url": "cmdesign.com.co"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -32,6 +32,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-rate-limit": "^8.1.0",
     "express-session": "^1.18.2",

@@ -131,7 +131,7 @@ const generarPlantillaConfirmacionPedido = (pedido) => {
           <h3 style="color: #856404; margin-top: 0;">¿Necesitas ayuda?</h3>
           <p style="margin: 5px 0;">Si tienes alguna pregunta sobre tu pedido, puedes contactarnos:</p>
           <ul style="margin: 5px 0; padding-left: 20px;">
-            <li>Email: soporte@verdenexo.com</li>
+            <li>Email: soporte@cmdesign.com</li>
             <li>Teléfono: +57 300 123 4567</li>
             <li>WhatsApp: +57 301 234 5678</li>
           </ul>
@@ -139,7 +139,7 @@ const generarPlantillaConfirmacionPedido = (pedido) => {
 
         <div style="text-align: center; margin: 30px 0; padding-top: 20px; border-top: 1px solid #dee2e6;">
           <p style="color: #6c757d; font-size: 14px;">
-            Gracias por tu compra en VerdeNexo.<br>
+            Gracias por tu compra en CmDesign.<br>
             Tu pedido está siendo procesado y te mantendremos informado de su estado.
           </p>
           <p style="color: #6c757d; font-size: 12px;">
@@ -160,7 +160,7 @@ const generarPlantillaConfirmacionPedido = (pedido) => {
 export const sendOrderConfirmationEmail = async (pedido) => {
   try {
     const mailOptions = {
-      from: process.env.EMAIL_FROM || `"VerdeNexo" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_FROM || `"CmDesign" <${process.env.EMAIL_USER}>`,
       to: pedido.facturacion.email,
       subject: `Confirmación de Pedido - ${pedido.numeroPedido}`,
       html: generarPlantillaConfirmacionPedido(pedido)
@@ -196,7 +196,7 @@ export const sendOrderStatusUpdateEmail = async (pedido, nuevoEstado, mensajeAdi
     const estadoTraducido = estadosTraduccion[nuevoEstado] || nuevoEstado;
 
     const mailOptions = {
-      from: process.env.EMAIL_FROM || `"VerdeNexo" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_FROM || `"CmDesign" <${process.env.EMAIL_USER}>`,
       to: pedido.facturacion.email,
       subject: `Actualización de Pedido - ${pedido.numeroPedido}`,
       html: `
@@ -240,7 +240,7 @@ export const sendOrderStatusUpdateEmail = async (pedido, nuevoEstado, mensajeAdi
               <h3 style="color: #856404; margin-top: 0;">¿Necesitas ayuda?</h3>
               <p style="margin: 5px 0;">Si tienes alguna pregunta sobre tu pedido, puedes contactarnos:</p>
               <ul style="margin: 5px 0; padding-left: 20px;">
-                <li>Email: soporte@verdenexo.com</li>
+                <li>Email: soporte@CmDesign.com</li>
                 <li>Teléfono: +57 300 123 4567</li>
                 <li>WhatsApp: +57 301 234 5678</li>
               </ul>
@@ -248,7 +248,7 @@ export const sendOrderStatusUpdateEmail = async (pedido, nuevoEstado, mensajeAdi
 
             <div style="text-align: center; margin: 30px 0; padding-top: 20px; border-top: 1px solid #dee2e6;">
               <p style="color: #6c757d; font-size: 14px;">
-                Gracias por elegir VerdeNexo.<br>
+                Gracias por elegir CmDesign.<br>
                 Te mantendremos informado de cualquier cambio en tu pedido.
               </p>
             </div>

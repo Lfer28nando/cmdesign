@@ -69,29 +69,11 @@ export const errorHandler = (err, req, res, next) => {
 // Middleware para capturar rutas que no existen (404)
 // Este va ANTES del errorHandler en app.js
 export const notFoundHandler = (req, res, next) => {
-    const error = convertToAppError({
-        name: 'NotFoundError',
-        message: `Ruta ${req.originalUrl} no encontrada`
-    });
-    
-        // Si la ruta no existe, devolver error API_003
-        if (req.originalUrl === '/api/checkout/guardar-datos' && req.method === 'POST') {
-            return res.status(404).json({
-                success: false,
-                error: {
-                    code: 'API_003',
-                    message: 'La ruta /api/checkout/guardar-datos no está disponible. Verifica que el backend esté corriendo y la ruta esté definida como POST.',
-                    timestamp: new Date().toISOString()
-                }
-            });
-        }
-        next(createError('API_003', {
-            message: 'Recurso no encontrado',
-            originalUrl: req.originalUrl,
-            method: req.method
-        }));
-    
-    next(error);
+    next(createError('API_ENDPOINT_NOT_FOUND', {
+        message: 'Recurso no encontrado',
+        originalUrl: req.originalUrl,
+        method: req.method
+    }));
 };
 
 // Middleware para capturar errores asíncronos que se me olvide manejar
