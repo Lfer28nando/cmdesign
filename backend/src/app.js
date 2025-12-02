@@ -17,6 +17,7 @@ import checkoutRoutes from "./routes/checkout.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
+import pageConfigRoutes from "./routes/pageConfig.routes.js";
 import webRoutes from "./routes/web.routes.js";
 
 // Middlewares
@@ -168,6 +169,7 @@ app.use("/api/checkout", checkoutRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/page-config", pageConfigRoutes);
 
 // ================================================================
 // 11. RUTAS WEB (HTML/EJS)

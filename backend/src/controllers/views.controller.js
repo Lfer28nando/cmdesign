@@ -49,3 +49,7 @@ export const renderNinos = (req, res) => {
 export const renderNinosShirts = (req, res) => {
     res.render('pages/ninos-shirts')
 };
+
+export const renderHoodies = (req, res) => {
+    res.render('pages/hoodies')
+};
