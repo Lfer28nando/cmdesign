@@ -208,4 +208,5 @@ Performance	5/10	Sin paginación, queries ineficientes
 Mantenibilidad	6/10	Código limpio pero inconsistente
 Testabilidad	4/10	Servicios acoplados, lógica en controladores
 TOTAL	68/100	Funcional pero necesita refactor para producción
-Conclusión: El código tiene una base sólida pero necesita refactorización urgente en seguridad y escalabilidad antes de producción. Prioriza los fixes críticos de seguridad (email verification, password strength) esta semana.
+Conclusión: El código tiene una base sólida pero necesita refactorización urgente en seguridad y escalabilidad antes de producción. Prioriza los fixes críticos de seguridad (email verification, password strength) esta semana.]
+error en login desconocido.

@@ -9,9 +9,12 @@ export const getAllCategories = async (req, res, next) => {
     if (tipo) filter.tipo = tipo;
     if (activo !== undefined) filter.activo = activo === 'true';
     
+    console.log('getAllCategories filter:', filter);
     const categorias = await Categoria.find(filter).sort({ tipo: 1, orden: 1 });
+    console.log('getAllCategories found:', categorias.length);
     res.json({ ok: true, data: categorias });
   } catch (error) {
+    console.error('getAllCategories error:', error);
     next(error);
   }
 };
@@ -41,6 +44,9 @@ export const getCategoriesByType = async (req, res, next) => {
         if (cat.tipo === 'subcategoria' && cat.padre) {
           item.padre = cat.padre;
         }
+        if (cat.tipo === 'categoria' && cat.generos?.length) {
+          item.generos = cat.generos;
+        }
         grouped[cat.tipo].push(item);
       }
     });
@@ -53,7 +59,7 @@ export const getCategoriesByType = async (req, res, next) => {
 
 export const createCategory = async (req, res, next) => {
   try {
-    const { nombre, tipo, descripcion, imagen, orden, activo, padre } = req.body;
+    const { nombre, tipo, descripcion, imagen, orden, activo, padre, generos } = req.body;
     
     if (!nombre || !tipo) {
       return next(createError('VAL_REQUIRED', { fields: ['nombre', 'tipo'] }));
@@ -64,7 +70,17 @@ export const createCategory = async (req, res, next) => {
       return next(createError('VAL_INVALID', { field: 'tipo', valid: validTypes }));
     }
     
-    const categoria = new Categoria({ nombre, tipo, descripcion, imagen, orden, activo, padre });
+    const categoriaData = { nombre, tipo, descripcion, imagen, orden, activo };
+    
+    if (tipo === 'subcategoria' && padre) {
+      categoriaData.padre = padre;
+    }
+    
+    if (tipo === 'categoria' && generos?.length) {
+      categoriaData.generos = generos;
+    }
+    
+    const categoria = new Categoria(categoriaData);
     await categoria.save();
     
     res.status(201).json({ ok: true, data: categoria });

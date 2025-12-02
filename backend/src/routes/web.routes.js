@@ -10,7 +10,8 @@ import {
     renderCatalog,
     renderLogin,
     renderRegister,
-    renderShirts
+    renderShirts,
+    renderNinos
 } from '../controllers/views.controller.js';
 
 // Si tienes middlewares de auth para proteger vistas (ej. admin), impórtalos aquí
@@ -27,6 +28,7 @@ router.get('/producto/:id', renderDetailProduct);
 router.get('/catalogo', renderCatalog);
 router.get('/login', renderLogin);
 router.get('/register', renderRegister);
+router.get('/ninos', renderNinos);
 router.get('/shirts', renderShirts)
 // Rutas Privadas (Ejemplo: Admin)
 // Nota: Deberías agregar aquí tus middlewares de protección si no quieres que cualquiera entre

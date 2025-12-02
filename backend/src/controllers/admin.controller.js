@@ -553,16 +553,30 @@ export const getCategoryById = async (req, res, next) => {
 
 export const createCategory = async (req, res, next) => {
     try {
-        const { nombre, tipo, descripcion, imagen, orden, activo } = req.body;
+        const { nombre, tipo, descripcion, imagen, orden, activo, padre, generos } = req.body;
+        console.log('createCategory body:', req.body);
         
         if (!nombre || !tipo) {
             return res.status(400).json({ success: false, message: 'Nombre y tipo son requeridos' });
         }
         
-        const category = new Categoria({ nombre, tipo, descripcion, imagen, orden, activo });
+        const categoryData = { nombre, tipo, descripcion, imagen, orden, activo };
+        
+        if (tipo === 'subcategoria' && padre) {
+            categoryData.padre = padre;
+        }
+        
+        if (tipo === 'categoria' && generos?.length) {
+            categoryData.generos = generos;
+        }
+        
+        console.log('Creating category with data:', categoryData);
+        const category = new Categoria(categoryData);
         await category.save();
+        console.log('Category created:', category);
         res.status(201).json({ success: true, message: 'Categoría creada', data: category });
     } catch (error) {
+        console.error('createCategory error:', error);
         next(error);
     }
 };

@@ -698,103 +698,421 @@ window.toggleProduct = async function(id) {
 };
 
 // =============================================
-// Categories
+// Categories - Visual Management System
 // =============================================
-// Cache for parent categories
-let parentCategoriesCache = [];
+let categoriesCache = [];
+let generosCache = [];
+let currentGenderId = null;
+let currentCategoryId = null;
 
 async function loadCategories() {
     const container = document.getElementById('categoriesContent');
     container.innerHTML = '<div class="section-loading"><div class="spinner-border" role="status"></div></div>';
     
+    // Reset views
+    document.getElementById('genderDetailView').style.display = 'none';
+    document.getElementById('allCategoriesView').style.display = 'none';
+    container.style.display = 'block';
+    
     try {
         const res = await API.get('/api/categories/all');
+        console.log('Categories response:', res.data);
         if (res.data.success || res.data.ok) {
-            const categories = res.data.data || res.data.categories || [];
-            parentCategoriesCache = categories.filter(c => c.tipo === 'categoria');
-            renderCategories(categories);
+            categoriesCache = res.data.data || res.data.categories || [];
+            console.log('Categories loaded:', categoriesCache.length, categoriesCache);
+            generosCache = categoriesCache.filter(c => c.tipo === 'genero');
+            console.log('Generos:', generosCache.length, generosCache);
+            renderGendersGrid();
+        } else {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-tags"></i><h3>Error al cargar categorías</h3><p>Respuesta inesperada del servidor</p></div>';
         }
     } catch (err) {
+        console.error('Error loading categories:', err);
         container.innerHTML = '<div class="empty-state"><i class="fas fa-tags"></i><h3>Error al cargar categorías</h3></div>';
     }
 }
 
-function renderCategories(categories) {
+function renderGendersGrid() {
     const container = document.getElementById('categoriesContent');
     
-    if (!categories || categories.length === 0) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-tags"></i><h3>No hay categorías</h3><p>Crea tu primera categoría</p></div>';
+    if (generosCache.length === 0) {
+        container.innerHTML = `
+            <div class="categories-empty">
+                <i class="fas fa-venus-mars"></i>
+                <h4>No hay géneros creados</h4>
+                <p>Crea tu primer género para comenzar a organizar las categorías</p>
+                <button class="btn btn-primary-admin" id="btnCreateFirstGenero">
+                    <i class="fas fa-plus me-2"></i>Crear Género
+                </button>
+            </div>
+        `;
+        document.getElementById('btnCreateFirstGenero')?.addEventListener('click', openNewGeneroModal);
         return;
     }
     
+    // Count categories per gender
+    const catsByGender = {};
+    generosCache.forEach(g => catsByGender[g._id] = 0);
+    categoriesCache.filter(c => c.tipo === 'categoria').forEach(cat => {
+        (cat.generos || []).forEach(gId => {
+            const id = typeof gId === 'object' ? gId._id : gId;
+            if (catsByGender[id] !== undefined) catsByGender[id]++;
+        });
+    });
+    
+    const getGenderIcon = (nombre) => {
+        const n = nombre.toLowerCase();
+        if (n.includes('hombre')) return { class: 'hombre', icon: 'fa-mars' };
+        if (n.includes('mujer')) return { class: 'mujer', icon: 'fa-venus' };
+        if (n === 'niño') return { class: 'nino', icon: 'fa-child' };
+        if (n === 'niña') return { class: 'nina', icon: 'fa-child-dress' };
+        return { class: 'default', icon: 'fa-user' };
+    };
+    
+    container.innerHTML = `
+        <div class="genders-grid">
+            ${generosCache.map(g => {
+                const iconInfo = getGenderIcon(g.nombre);
+                const count = catsByGender[g._id] || 0;
+                return `
+                    <div class="gender-card" data-id="${g._id}" onclick="openGenderDetail('${g._id}')">
+                        <div class="gender-card-actions">
+                            <button class="btn-icon edit" onclick="event.stopPropagation(); editCategory('${g._id}')" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" onclick="event.stopPropagation(); confirmDelete('${g._id}', 'category', '${g.nombre}')" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="gender-card-icon ${iconInfo.class}">
+                            <i class="fas ${iconInfo.icon}"></i>
+                        </div>
+                        <div class="gender-card-name">${g.nombre}</div>
+                        <div class="gender-card-count">${count} categoría${count !== 1 ? 's' : ''}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+window.openGenderDetail = function(genderId) {
+    currentGenderId = genderId;
+    currentCategoryId = null;
+    
+    const gender = generosCache.find(g => g._id === genderId);
+    if (!gender) return;
+    
+    document.getElementById('categoriesContent').style.display = 'none';
+    document.getElementById('allCategoriesView').style.display = 'none';
+    document.getElementById('genderDetailView').style.display = 'block';
+    
+    document.getElementById('genderDetailTitle').innerHTML = `Categorías de <span style="color: var(--admin-primary)">${gender.nombre}</span>`;
+    
+    renderGenderCategories(genderId);
+};
+
+function renderGenderCategories(genderId) {
+    const grid = document.getElementById('genderCategoriesGrid');
+    const subcatSection = document.getElementById('subcategoriesSection');
+    subcatSection.style.display = 'none';
+    
+    // Filter categories that belong to this gender
+    const genderCategories = categoriesCache.filter(c => {
+        if (c.tipo !== 'categoria') return false;
+        const genIds = (c.generos || []).map(g => typeof g === 'object' ? g._id : g);
+        return genIds.includes(genderId);
+    });
+    
+    if (genderCategories.length === 0) {
+        grid.innerHTML = `
+            <div class="add-category-card" onclick="openAddCategoryToGender()">
+                <i class="fas fa-plus"></i>
+                <div>Agregar primera categoría</div>
+            </div>
+        `;
+        return;
+    }
+    
+    // Count subcategories per category
+    const subcatCount = {};
+    categoriesCache.filter(c => c.tipo === 'subcategoria').forEach(sub => {
+        const padreId = typeof sub.padre === 'object' ? sub.padre._id : sub.padre;
+        subcatCount[padreId] = (subcatCount[padreId] || 0) + 1;
+    });
+    
+    grid.innerHTML = genderCategories.map(cat => `
+        <div class="category-card ${currentCategoryId === cat._id ? 'selected' : ''}" 
+             data-id="${cat._id}" 
+             onclick="selectCategory('${cat._id}')">
+            <div class="category-card-actions">
+                <button class="btn-icon edit" onclick="event.stopPropagation(); editCategory('${cat._id}')" title="Editar">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-icon delete" onclick="event.stopPropagation(); removeCategoryFromGender('${cat._id}')" title="Quitar de este género">
+                    <i class="fas fa-unlink"></i>
+                </button>
+            </div>
+            <div class="category-card-name">${cat.nombre}</div>
+            <div class="category-card-count">${subcatCount[cat._id] || 0} subcategoría${(subcatCount[cat._id] || 0) !== 1 ? 's' : ''}</div>
+        </div>
+    `).join('') + `
+        <div class="add-category-card" onclick="openAddCategoryToGender()">
+            <i class="fas fa-plus"></i>
+            <div>Agregar categoría</div>
+        </div>
+    `;
+}
+
+window.selectCategory = function(categoryId) {
+    currentCategoryId = categoryId;
+    
+    // Update selection UI
+    document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.toggle('selected', card.dataset.id === categoryId);
+    });
+    
+    renderSubcategories(categoryId);
+};
+
+function renderSubcategories(categoryId) {
+    const section = document.getElementById('subcategoriesSection');
+    const grid = document.getElementById('subcategoriesGrid');
+    const category = categoriesCache.find(c => c._id === categoryId);
+    
+    if (!category) {
+        section.style.display = 'none';
+        return;
+    }
+    
+    section.style.display = 'block';
+    document.getElementById('subcategoriesTitle').innerHTML = `Subcategorías de <span style="color: var(--admin-info)">${category.nombre}</span>`;
+    
+    const subcats = categoriesCache.filter(c => {
+        if (c.tipo !== 'subcategoria') return false;
+        const padreId = typeof c.padre === 'object' ? c.padre._id : c.padre;
+        return padreId === categoryId;
+    });
+    
+    if (subcats.length === 0) {
+        grid.innerHTML = '<p class="text-muted">No hay subcategorías. Haz clic en "Nueva Subcategoría" para crear una.</p>';
+        return;
+    }
+    
+    grid.innerHTML = subcats.map(sub => `
+        <div class="subcategory-tag">
+            <span>${sub.nombre}</span>
+            <button class="delete-btn" onclick="confirmDelete('${sub._id}', 'category', '${sub.nombre}')" title="Eliminar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `).join('');
+}
+
+function openNewGeneroModal() {
+    resetCategoryForm();
+    document.getElementById('categoryType').value = 'genero';
+    document.getElementById('categoryModalTitle').textContent = 'Nuevo Género';
+    toggleCategoryFormFields();
+    new bootstrap.Modal(document.getElementById('categoryModal')).show();
+}
+
+window.openAddCategoryToGender = async function() {
+    resetCategoryForm();
+    document.getElementById('categoryType').value = 'categoria';
+    document.getElementById('categoryModalTitle').textContent = 'Agregar Categoría';
+    document.getElementById('categoryContextGender').value = currentGenderId;
+    await toggleCategoryFormFields();
+    
+    // Pre-select current gender
+    const checkbox = document.querySelector(`#categoryGenerosCheckboxes input[value="${currentGenderId}"]`);
+    if (checkbox) {
+        checkbox.checked = true;
+        checkbox.closest('.genero-checkbox-item').classList.add('checked');
+    }
+    
+    new bootstrap.Modal(document.getElementById('categoryModal')).show();
+};
+
+window.openAddSubcategory = function() {
+    if (!currentCategoryId) {
+        showToast('Selecciona una categoría primero', 'warning');
+        return;
+    }
+    
+    resetCategoryForm();
+    document.getElementById('categoryType').value = 'subcategoria';
+    document.getElementById('categoryModalTitle').textContent = 'Nueva Subcategoría';
+    document.getElementById('categoryContextCategory').value = currentCategoryId;
+    toggleCategoryFormFields();
+    
+    // Pre-select current category as parent
+    const select = document.getElementById('categoryParent');
+    select.value = currentCategoryId;
+    
+    new bootstrap.Modal(document.getElementById('categoryModal')).show();
+};
+
+function resetCategoryForm() {
+    document.getElementById('categoryForm').reset();
+    document.getElementById('categoryId').value = '';
+    document.getElementById('categoryContextGender').value = '';
+    document.getElementById('categoryContextCategory').value = '';
+    document.getElementById('categoryActive').checked = true;
+}
+
+async function toggleCategoryFormFields() {
+    const tipo = document.getElementById('categoryType').value;
+    const generosGroup = document.getElementById('categoryGenerosGroup');
+    const parentGroup = document.getElementById('categoryParentGroup');
+    
+    generosGroup.style.display = 'none';
+    parentGroup.style.display = 'none';
+    
+    if (tipo === 'categoria') {
+        generosGroup.style.display = 'block';
+        await renderGenerosCheckboxes();
+    } else if (tipo === 'subcategoria') {
+        parentGroup.style.display = 'block';
+        await updateParentCategorySelect();
+    }
+}
+
+async function renderGenerosCheckboxes() {
+    const container = document.getElementById('categoryGenerosCheckboxes');
+    
+    if (generosCache.length === 0) {
+        try {
+            const res = await API.get('/api/categories/all');
+            if (res.data.success || res.data.ok) {
+                categoriesCache = res.data.data || [];
+                generosCache = categoriesCache.filter(c => c.tipo === 'genero');
+            }
+        } catch (err) {}
+    }
+    
+    if (generosCache.length === 0) {
+        container.innerHTML = '<p class="text-muted">No hay géneros. Crea uno primero.</p>';
+        return;
+    }
+    
+    container.innerHTML = generosCache.map(g => `
+        <label class="genero-checkbox-item">
+            <input type="checkbox" name="categoryGeneros" value="${g._id}">
+            <span>${g.nombre}</span>
+        </label>
+    `).join('');
+    
+    // Toggle checked class
+    container.querySelectorAll('input').forEach(input => {
+        input.addEventListener('change', () => {
+            input.closest('.genero-checkbox-item').classList.toggle('checked', input.checked);
+        });
+    });
+}
+
+async function updateParentCategorySelect(selectedParentId = '') {
+    const select = document.getElementById('categoryParent');
+    if (!select) return;
+    
+    const parentCategories = categoriesCache.filter(c => c.tipo === 'categoria');
+    
+    select.innerHTML = '<option value="">Seleccionar categoría padre...</option>' +
+        parentCategories.map(c => 
+            `<option value="${c._id}" ${c._id === selectedParentId ? 'selected' : ''}>${c.nombre}</option>`
+        ).join('');
+}
+
+window.removeCategoryFromGender = async function(categoryId) {
+    if (!currentGenderId) return;
+    
+    const category = categoriesCache.find(c => c._id === categoryId);
+    if (!category) return;
+    
+    // Remove current gender from category's generos array
+    const newGeneros = (category.generos || [])
+        .map(g => typeof g === 'object' ? g._id : g)
+        .filter(gId => gId !== currentGenderId);
+    
+    try {
+        await API.put(`/api/admin/categories/${categoryId}`, { generos: newGeneros });
+        showToast('Categoría removida de este género', 'success');
+        
+        // Update cache
+        category.generos = newGeneros;
+        renderGenderCategories(currentGenderId);
+    } catch (err) {
+        showToast('Error al remover categoría', 'error');
+    }
+};
+
+// View All Categories Table
+function showAllCategoriesTable() {
+    document.getElementById('categoriesContent').style.display = 'none';
+    document.getElementById('genderDetailView').style.display = 'none';
+    document.getElementById('allCategoriesView').style.display = 'block';
+    
+    renderAllCategoriesTable();
+}
+
+function renderAllCategoriesTable(filterType = '') {
+    const container = document.getElementById('allCategoriesTable');
+    
+    let filtered = categoriesCache;
+    if (filterType) {
+        filtered = categoriesCache.filter(c => c.tipo === filterType);
+    }
+    
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-tags"></i><h3>No hay categorías</h3></div>';
+        return;
+    }
+    
+    // Build parent name map
     const parentMap = {};
-    categories.forEach(c => { if (c.tipo === 'categoria') parentMap[c._id] = c.nombre; });
+    categoriesCache.forEach(c => { parentMap[c._id] = c.nombre; });
+    
+    // Build generos name map
+    const generosMap = {};
+    generosCache.forEach(g => { generosMap[g._id] = g.nombre; });
     
     container.innerHTML = `
         <div class="admin-table-wrapper">
             <table class="admin-table">
                 <thead>
-                    <tr><th>Nombre</th><th>Tipo</th><th>Padre</th><th>Estado</th><th>Orden</th><th>Acciones</th></tr>
+                    <tr><th>Nombre</th><th>Tipo</th><th>Géneros/Padre</th><th>Estado</th><th>Acciones</th></tr>
                 </thead>
                 <tbody>
-                    ${categories.map(c => `
-                        <tr>
-                            <td>${c.nombre}</td>
-                            <td><span class="badge bg-secondary">${c.tipo}</span></td>
-                            <td>${c.padre ? (parentMap[c.padre] || parentMap[c.padre?._id] || c.padre?.nombre || '-') : '-'}</td>
-                            <td><span class="badge-status ${c.activo !== false ? 'badge-success' : 'badge-muted'}">${c.activo !== false ? 'Activa' : 'Inactiva'}</span></td>
-                            <td>${c.orden || 0}</td>
-                            <td>
-                                <div class="d-flex gap-1">
-                                    <button class="btn-icon edit" onclick="editCategory('${c._id}')" title="Editar"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-icon delete" onclick="confirmDelete('${c._id}', 'category', '${c.nombre}')" title="Eliminar"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    `).join('')}
+                    ${filtered.map(c => {
+                        let relation = '-';
+                        if (c.tipo === 'categoria' && c.generos?.length) {
+                            relation = c.generos.map(g => {
+                                const id = typeof g === 'object' ? g._id : g;
+                                return generosMap[id] || id;
+                            }).join(', ');
+                        } else if (c.tipo === 'subcategoria' && c.padre) {
+                            const padreId = typeof c.padre === 'object' ? c.padre._id : c.padre;
+                            relation = parentMap[padreId] || '-';
+                        }
+                        return `
+                            <tr>
+                                <td>${c.nombre}</td>
+                                <td><span class="badge bg-secondary">${c.tipo}</span></td>
+                                <td>${relation}</td>
+                                <td><span class="badge-status ${c.activo !== false ? 'badge-success' : 'badge-muted'}">${c.activo !== false ? 'Activa' : 'Inactiva'}</span></td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <button class="btn-icon edit" onclick="editCategory('${c._id}')" title="Editar"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete" onclick="confirmDelete('${c._id}', 'category', '${c.nombre}')" title="Eliminar"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('')}
                 </tbody>
             </table>
         </div>
     `;
-}
-
-function updateParentCategorySelect(selectedParentId = '') {
-    const select = document.getElementById('categoryParent');
-    if (!select) return;
-    
-    select.innerHTML = '<option value="">Seleccionar categoría padre...</option>' +
-        parentCategoriesCache.map(c => 
-            `<option value="${c._id}" ${c._id === selectedParentId ? 'selected' : ''}>${c.nombre}</option>`
-        ).join('');
-}
-
-async function toggleParentSelect() {
-    const tipo = document.getElementById('categoryType').value;
-    const parentGroup = document.getElementById('categoryParentGroup');
-    const parentSelect = document.getElementById('categoryParent');
-    
-    if (tipo === 'subcategoria') {
-        parentGroup.style.display = 'block';
-        parentSelect.required = true;
-        
-        // Load parent categories if cache is empty
-        if (parentCategoriesCache.length === 0) {
-            try {
-                const res = await API.get('/api/categories/all');
-                if (res.data.success || res.data.ok) {
-                    const categories = res.data.data || res.data.categories || [];
-                    parentCategoriesCache = categories.filter(c => c.tipo === 'categoria');
-                }
-            } catch (err) {
-                console.error('Error loading parent categories');
-            }
-        }
-        updateParentCategorySelect();
-    } else {
-        parentGroup.style.display = 'none';
-        parentSelect.required = false;
-        parentSelect.value = '';
-    }
 }
 
 window.editCategory = async function(id) {
@@ -812,10 +1130,24 @@ window.editCategory = async function(id) {
             document.getElementById('categoryOrder').value = c.orden || 0;
             document.getElementById('categoryActive').checked = c.activo !== false;
             
-            toggleParentSelect();
+            await toggleCategoryFormFields();
+            
+            // Set generos checkboxes for categoria
+            if (c.tipo === 'categoria' && c.generos?.length) {
+                c.generos.forEach(g => {
+                    const gId = typeof g === 'object' ? g._id : g;
+                    const checkbox = document.querySelector(`#categoryGenerosCheckboxes input[value="${gId}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        checkbox.closest('.genero-checkbox-item').classList.add('checked');
+                    }
+                });
+            }
+            
+            // Set parent for subcategoria
             if (c.tipo === 'subcategoria' && c.padre) {
                 const parentId = typeof c.padre === 'object' ? c.padre._id : c.padre;
-                updateParentCategorySelect(parentId);
+                document.getElementById('categoryParent').value = parentId;
             }
         }
         modal.show();
@@ -1425,7 +1757,15 @@ function initForms() {
             activo: document.getElementById('categoryActive').checked
         };
         
-        if (tipo === 'subcategoria') {
+        if (tipo === 'categoria') {
+            // Get selected generos
+            const selectedGeneros = [];
+            document.querySelectorAll('#categoryGenerosCheckboxes input:checked').forEach(cb => {
+                selectedGeneros.push(cb.value);
+            });
+            data.generos = selectedGeneros;
+            data.padre = null;
+        } else if (tipo === 'subcategoria') {
             const padre = document.getElementById('categoryParent').value;
             if (!padre) {
                 showToast('Selecciona una categoría padre', 'error');
@@ -1436,17 +1776,24 @@ function initForms() {
             data.padre = null;
         }
         
+        console.log('Category form data:', data);
+        
         try {
             const url = id ? `/api/admin/categories/${id}` : '/api/admin/categories';
             const method = id ? 'put' : 'post';
+            console.log('Sending to:', url, 'method:', method);
             const res = await API[method](url, data);
+            console.log('Category save response:', res.data);
             
             if (res.data.ok || res.data.success) {
                 showToast(id ? 'Categoría actualizada' : 'Categoría creada');
                 bootstrap.Modal.getInstance(document.getElementById('categoryModal')).hide();
                 loadCategories();
+            } else {
+                showToast(res.data.message || 'Error al guardar', 'error');
             }
         } catch (err) {
+            console.error('Error saving category:', err);
             showToast('Error al guardar', 'error');
         }
     });
@@ -1704,11 +2051,50 @@ document.addEventListener('DOMContentLoaded', () => {
     authGuard('/login');
     initSidebar();
     initForms();
+    initCategoryEvents();
     loadAdminInfo();
     loadDashboard();
     
     document.getElementById('logoutBtn')?.addEventListener('click', logout);
 });
+
+function initCategoryEvents() {
+    // New Genre button
+    document.getElementById('btnNewGenero')?.addEventListener('click', openNewGeneroModal);
+    
+    // View All Categories
+    document.getElementById('btnViewAllCategories')?.addEventListener('click', showAllCategoriesTable);
+    
+    // Back to Genders
+    document.getElementById('btnBackToGenders')?.addEventListener('click', () => {
+        currentGenderId = null;
+        currentCategoryId = null;
+        document.getElementById('genderDetailView').style.display = 'none';
+        document.getElementById('categoriesContent').style.display = 'block';
+        renderGendersGrid();
+    });
+    
+    // Back from All Categories
+    document.getElementById('btnBackFromAll')?.addEventListener('click', () => {
+        document.getElementById('allCategoriesView').style.display = 'none';
+        document.getElementById('categoriesContent').style.display = 'block';
+        renderGendersGrid();
+    });
+    
+    // Add Category to Gender
+    document.getElementById('btnAddCategoryToGender')?.addEventListener('click', openAddCategoryToGender);
+    
+    // Add Subcategory
+    document.getElementById('btnAddSubcategory')?.addEventListener('click', openAddSubcategory);
+    
+    // Filter by type
+    document.getElementById('filterCategoryType')?.addEventListener('change', (e) => {
+        renderAllCategoriesTable(e.target.value);
+    });
+    
+    // Category Type change in modal
+    document.getElementById('categoryType')?.addEventListener('change', toggleCategoryFormFields);
+}
 
 // Export for global access
 window.loadProducts = loadProducts;

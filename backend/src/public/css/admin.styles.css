@@ -1362,3 +1362,281 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* =============================================
+   Categories Visual Management
+   ============================================= */
+
+/* Gender Cards Grid */
+.genders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.gender-card {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.gender-card:hover {
+    border-color: var(--admin-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.gender-card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 24px;
+}
+
+.gender-card-icon.hombre { background: linear-gradient(135deg, #1565c0, #42a5f5); }
+.gender-card-icon.mujer { background: linear-gradient(135deg, #c2185b, #f48fb1); }
+.gender-card-icon.nino { background: linear-gradient(135deg, #2e7d32, #81c784); }
+.gender-card-icon.nina { background: linear-gradient(135deg, #7b1fa2, #ce93d8); }
+.gender-card-icon.default { background: linear-gradient(135deg, #455a64, #90a4ae); }
+
+.gender-card-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.gender-card-count {
+    font-size: 13px;
+    color: var(--admin-text-muted);
+}
+
+.gender-card-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.gender-card:hover .gender-card-actions {
+    opacity: 1;
+}
+
+/* Gender Detail View */
+.gender-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--admin-border);
+    margin-bottom: 20px;
+}
+
+.gender-detail-header h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 20px;
+}
+
+/* Categories Grid */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    padding: 16px 0;
+}
+
+.category-card {
+    background: var(--admin-surface);
+    border: 2px solid var(--admin-border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.category-card:hover {
+    border-color: var(--admin-info);
+    background: var(--admin-surface-hover);
+}
+
+.category-card.selected {
+    border-color: var(--admin-primary);
+    background: rgba(229, 57, 53, 0.1);
+}
+
+.category-card-name {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.category-card-count {
+    font-size: 12px;
+    color: var(--admin-text-muted);
+}
+
+.category-card-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.category-card:hover .category-card-actions {
+    opacity: 1;
+}
+
+/* Add Category Card */
+.add-category-card {
+    background: transparent;
+    border: 2px dashed var(--admin-border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--admin-text-muted);
+}
+
+.add-category-card:hover {
+    border-color: var(--admin-primary);
+    color: var(--admin-primary);
+}
+
+.add-category-card i {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+/* Subcategories Section */
+.subcategories-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    margin-top: 24px;
+    border-top: 1px solid var(--admin-border);
+}
+
+.subcategories-header h4 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--admin-text-muted);
+}
+
+.subcategories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 0;
+}
+
+.subcategory-tag {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.subcategory-tag:hover {
+    border-color: var(--admin-info);
+}
+
+.subcategory-tag .delete-btn {
+    background: none;
+    border: none;
+    color: var(--admin-text-muted);
+    cursor: pointer;
+    padding: 0;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.subcategory-tag:hover .delete-btn {
+    opacity: 1;
+}
+
+.subcategory-tag .delete-btn:hover {
+    color: var(--admin-danger);
+}
+
+/* Generos Checkboxes in Modal */
+.generos-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.genero-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--admin-surface-hover);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.genero-checkbox-item:hover {
+    border-color: var(--admin-primary);
+}
+
+.genero-checkbox-item input {
+    accent-color: var(--admin-primary);
+}
+
+.genero-checkbox-item.checked {
+    border-color: var(--admin-primary);
+    background: rgba(229, 57, 53, 0.15);
+}
+
+/* Empty State for Categories */
+.categories-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--admin-text-muted);
+}
+
+.categories-empty i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.categories-empty h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--admin-text);
+}
+
+.categories-empty p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}

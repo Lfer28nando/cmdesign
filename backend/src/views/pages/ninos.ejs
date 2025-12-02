@@ -1,0 +1,199 @@
+<%- include('../partials/header') %>
+<link rel="stylesheet" href="/css/index.styles.css">
+
+<style>
+.cm-ninos-page {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.cm-ninos-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.cm-ninos-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.cm-ninos-header p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.cm-ninos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 900px;
+  width: 100%;
+}
+
+.cm-ninos-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  text-decoration: none;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cm-ninos-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.cm-ninos-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.cm-ninos-card:hover img {
+  transform: scale(1.08);
+}
+
+.cm-ninos-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+}
+
+.cm-ninos-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+  color: white;
+  text-align: center;
+}
+
+.cm-ninos-card-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.cm-ninos-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  background: white;
+  color: #1a1a1a;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.cm-ninos-card:hover .cm-ninos-card-cta {
+  background: #1a1a1a;
+  color: white;
+}
+
+/* Card Niño - Azul */
+.cm-ninos-card-nino {
+  background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
+}
+
+/* Card Niña - Rosa */
+.cm-ninos-card-nina {
+  background: linear-gradient(135deg, #f48fb1 0%, #e91e63 100%);
+}
+
+.cm-back-link {
+  margin-top: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.cm-back-link:hover {
+  color: #1a1a1a;
+}
+
+@media (max-width: 600px) {
+  .cm-ninos-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
+  }
+  
+  .cm-ninos-card {
+    aspect-ratio: 3/4;
+  }
+  
+  .cm-ninos-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .cm-ninos-card-title {
+    font-size: 1.5rem;
+  }
+}
+</style>
+
+<main class="cm-ninos-page">
+  <div class="cm-ninos-header">
+    <h1>Ropa para Niños</h1>
+    <p>Selecciona una categoría para ver nuestra colección</p>
+  </div>
+  
+  <div class="cm-ninos-grid">
+    <!-- Card Niño -->
+    <a href="/catalogo?genero=niño" class="cm-ninos-card cm-ninos-card-nino">
+      <img src="https://placehold.co/500x625/bbdefb/1565c0?text=NIÑO" alt="Ropa para Niño">
+      <div class="cm-ninos-card-overlay"></div>
+      <div class="cm-ninos-card-content">
+        <h2 class="cm-ninos-card-title">Niño</h2>
+        <span class="cm-ninos-card-cta">
+          Ver colección
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+    
+    <!-- Card Niña -->
+    <a href="/catalogo?genero=niña" class="cm-ninos-card cm-ninos-card-nina">
+      <img src="https://placehold.co/500x625/f8bbd9/c2185b?text=NIÑA" alt="Ropa para Niña">
+      <div class="cm-ninos-card-overlay"></div>
+      <div class="cm-ninos-card-content">
+        <h2 class="cm-ninos-card-title">Niña</h2>
+        <span class="cm-ninos-card-cta">
+          Ver colección
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+  </div>
+  
+  <a href="/" class="cm-back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Volver al inicio
+  </a>
+</main>
+
+<%- include('../partials/footer') %>

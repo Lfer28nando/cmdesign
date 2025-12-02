@@ -21,6 +21,7 @@ const STATE = {
   },
   categories: {},
   allSubcategorias: [],
+  allCategorias: [],
   gridCols: 4,
   loadedCount: 0
 };
@@ -95,7 +96,9 @@ async function loadCategories() {
     if (data?.ok) {
       STATE.categories = data.data || {};
       STATE.allSubcategorias = STATE.categories.subcategoria || [];
+      STATE.allCategorias = STATE.categories.categoria || [];
       renderFilterMenus();
+      updatePageHeader();
     }
   } catch (err) {
     console.error('Error loading categories:', err);
@@ -103,14 +106,65 @@ async function loadCategories() {
       categoria: [],
       subcategoria: [],
       edad: [{ nombre: 'Adulto' }, { nombre: 'Nino' }, { nombre: 'Bebe' }],
-      genero: [{ nombre: 'Hombre' }, { nombre: 'Mujer' }, { nombre: 'Unisex' }],
+      genero: [{ nombre: 'Hombre' }, { nombre: 'Mujer' }, { nombre: 'Niño' }, { nombre: 'Niña' }],
       marca: [],
       personaje: [],
       talla: [{ nombre: 'XS' }, { nombre: 'S' }, { nombre: 'M' }, { nombre: 'L' }, { nombre: 'XL' }, { nombre: 'XXL' }]
     };
     STATE.allSubcategorias = [];
+    STATE.allCategorias = [];
     renderFilterMenus();
+    updatePageHeader();
   }
+}
+
+// Actualizar título y breadcrumb según filtros
+function updatePageHeader() {
+  const titleEl = $('#cmCatalogTitle');
+  const subtitleEl = $('#cmCatalogSubtitle');
+  const breadcrumbEl = $('#cmBreadcrumbCurrent');
+  
+  if (STATE.filters.genero.length === 1) {
+    const genero = STATE.filters.genero[0];
+    const generoTitles = {
+      'hombre': 'Hombres',
+      'mujer': 'Mujeres',
+      'niño': 'Niños',
+      'niña': 'Niñas'
+    };
+    const title = generoTitles[genero.toLowerCase()] || genero;
+    if (titleEl) titleEl.textContent = title;
+    if (subtitleEl) subtitleEl.textContent = `Descubre nuestra colección para ${title.toLowerCase()}`;
+    if (breadcrumbEl) breadcrumbEl.textContent = title;
+  } else {
+    if (titleEl) titleEl.textContent = 'Catálogo';
+    if (subtitleEl) subtitleEl.textContent = 'Descubre nuestra colección completa';
+    if (breadcrumbEl) breadcrumbEl.textContent = 'Catálogo';
+  }
+}
+
+// Filtrar categorías por género seleccionado
+function getFilteredCategorias() {
+  if (!STATE.filters.genero.length) {
+    return STATE.allCategorias;
+  }
+  
+  // Obtener IDs de los géneros seleccionados
+  const selectedGeneroIds = (STATE.categories.genero || [])
+    .filter(g => STATE.filters.genero.map(f => f.toLowerCase()).includes(g.nombre.toLowerCase()))
+    .map(g => g._id);
+  
+  // Filtrar categorías que tienen algún género seleccionado en su array generos
+  const filteredCats = STATE.allCategorias.filter(cat => {
+    if (!cat.generos || !cat.generos.length) return false;
+    // Verificar si algún género de la categoría está en los seleccionados
+    return cat.generos.some(gId => {
+      const id = typeof gId === 'object' ? gId._id : gId;
+      return selectedGeneroIds.includes(id) || selectedGeneroIds.includes(String(id));
+    });
+  });
+  
+  return filteredCats;
 }
 
 function getFilteredSubcategorias() {
@@ -131,13 +185,24 @@ function getFilteredSubcategorias() {
 
 function renderFilterMenus() {
   const filterTypes = ['categoria', 'subcategoria', 'edad', 'genero', 'marca', 'personaje', 'talla'];
+  const noGeneroSelected = STATE.filters.genero.length === 0;
   
   filterTypes.forEach(type => {
     let items = STATE.categories[type] || [];
     const isSubcategoria = type === 'subcategoria';
+    const isCategoria = type === 'categoria';
+    
+    // Categoría requiere género seleccionado
+    const catDisabled = isCategoria && noGeneroSelected;
+    // Subcategoría requiere categoría seleccionada
     const subcatDisabled = isSubcategoria && STATE.filters.categoria.length === 0;
     
-    if (isSubcategoria) {
+    // Filtrar categorías por género si hay género seleccionado
+    if (isCategoria && !noGeneroSelected) {
+      items = getFilteredCategorias();
+    }
+    
+    if (isSubcategoria && !subcatDisabled) {
       items = getFilteredSubcategorias();
     }
     
@@ -146,11 +211,25 @@ function renderFilterMenus() {
     const dropdownDesktop = menuDesktop?.closest('.cm-filter-dropdown');
     const dropdownMobile = menuMobile?.closest('.cm-filter-section');
     
+    // Deshabilitar visualmente
+    if (isCategoria) {
+      if (dropdownDesktop) dropdownDesktop.classList.toggle('disabled', catDisabled);
+      if (dropdownMobile) dropdownMobile.classList.toggle('disabled', catDisabled);
+    }
     if (isSubcategoria) {
       if (dropdownDesktop) dropdownDesktop.classList.toggle('disabled', subcatDisabled);
       if (dropdownMobile) dropdownMobile.classList.toggle('disabled', subcatDisabled);
     }
     
+    // Mensaje para categoría sin género
+    if (catDisabled) {
+      const msg = '<p class="cm-filter-empty">Primero selecciona un género</p>';
+      if (menuDesktop) menuDesktop.innerHTML = msg;
+      if (menuMobile) menuMobile.innerHTML = msg;
+      return;
+    }
+    
+    // Mensaje para subcategoría sin categoría
     if (subcatDisabled) {
       const msg = '<p class="cm-filter-empty">Primero selecciona una categoría</p>';
       if (menuDesktop) menuDesktop.innerHTML = msg;
@@ -484,6 +563,14 @@ function attachFilterEvents() {
         }
       } else {
         STATE.filters[type] = STATE.filters[type].filter(v => v !== value);
+      }
+      
+      // Si cambia género, limpiar categoría y subcategoría y re-renderizar
+      if (type === 'genero') {
+        STATE.filters.categoria = [];
+        STATE.filters.subcategoria = [];
+        renderFilterMenus();
+        updatePageHeader();
       }
       
       if (type === 'categoria') {
