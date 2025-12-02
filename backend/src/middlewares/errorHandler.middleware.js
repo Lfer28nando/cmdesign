@@ -22,6 +22,12 @@ export const errorHandler = (err, req, res, next) => {
             error = createError('SRV_INTERNAL_ERROR', { originalError: original.message, stack: original.stack });
         }
 
+        // Si es una peticion web (no API) y es un error 500, renderizar pagina
+        const httpStatus = error.httpStatus || 500;
+        if (!req.originalUrl.startsWith('/api/') && httpStatus >= 500) {
+            return res.status(httpStatus).render('pages/500');
+        }
+
         // Construir la respuesta estándar
         const response = {
             success: false,
@@ -44,11 +50,15 @@ export const errorHandler = (err, req, res, next) => {
         }
 
         // Enviar la respuesta con el código HTTP correcto
-        return res.status(error.httpStatus || 500).json(response);
+        return res.status(httpStatus).json(response);
     } catch (handlerError) {
         // Si el manejador de errores falla por alguna razón, aseguramos no romper la app
         console.error('Fallo en errorHandler:', handlerError);
         try {
+            // Si no es API, intentar renderizar pagina 500
+            if (!req.originalUrl.startsWith('/api/')) {
+                return res.status(500).render('pages/500');
+            }
             // Intento enviar una respuesta mínima
             return res.status(500).json({
                 success: false,
@@ -69,11 +79,17 @@ export const errorHandler = (err, req, res, next) => {
 // Middleware para capturar rutas que no existen (404)
 // Este va ANTES del errorHandler en app.js
 export const notFoundHandler = (req, res, next) => {
-    next(createError('API_ENDPOINT_NOT_FOUND', {
-        message: 'Recurso no encontrado',
-        originalUrl: req.originalUrl,
-        method: req.method
-    }));
+    // Si es una peticion API, devolver JSON
+    if (req.originalUrl.startsWith('/api/')) {
+        return next(createError('API_ENDPOINT_NOT_FOUND', {
+            message: 'Recurso no encontrado',
+            originalUrl: req.originalUrl,
+            method: req.method
+        }));
+    }
+    
+    // Si es una peticion web, renderizar pagina 404
+    return res.status(404).render('pages/404');
 };
 
 // Middleware para capturar errores asíncronos que se me olvide manejar

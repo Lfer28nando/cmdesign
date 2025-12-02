@@ -1,6 +1,5 @@
 // producto.js - Vista de detalle de producto profesional
 import { API } from './api.functions.js';
-import { CartManager } from './cart.js';
 
 // Estado del producto
 const state = {
@@ -404,6 +403,13 @@ function setupEventListeners() {
     btn.textContent = 'AGREGANDO...';
 
     try {
+      // CartManager se carga como global desde cart.js
+      const CartManager = window.CartManager;
+      if (!CartManager) {
+        showToast('Error: Sistema de carrito no disponible', 'error');
+        return;
+      }
+      
       const result = await CartManager.addToCart(state.product._id, state.quantity);
       
       if (result.success) {

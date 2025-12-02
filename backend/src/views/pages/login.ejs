@@ -9,6 +9,9 @@
 </head>
 
 <body class="h-screen overflow-hidden bg-neutral-900">
+    <script>
+        window.BACKEND_URL = "<%= BACKEND_URL %>";
+    </script>
     <script type="module" src="/js/api.functions.js"></script>
     <script type="module" src="/js/googleAuth.functions.js"></script>
     <script type="module" src="/js/login.functions.js"></script>
@@ -172,7 +175,7 @@
 
     <!-- Main Container -->
     <div class="relative z-10 flex h-[calc(100vh-72px)] items-center justify-center p-4">
-        <div class="w-full max-w-5xl overflow-hidden rounded-2xl shadow-2xl lg:flex lg:h-[75vh] lg:min-h-[500px]">
+        <div class="w-full max-w-5xl overflow-hidden rounded-2xl shadow-2xl lg:flex lg:h-[80vh] lg:min-h-[550px]">
 
             <!-- Left Panel - Image (Desktop only) -->
             <div class="hidden lg:flex lg:w-1/2 relative bg-cover bg-bottom"

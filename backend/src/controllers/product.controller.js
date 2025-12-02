@@ -60,8 +60,17 @@ export const createProduct = async (req, res, next) => {
             nombre,
             descripcion,
             precioBase,
+            precioOriginal,
             disponibilidad = true,
             stock = 0,
+            categoria,
+            subcategoria,
+            edad,
+            genero,
+            marca,
+            personaje,
+            coleccion,
+            tallasDisponibles,
             etiquetas = [],
             variantes = []
         } = req.body || {};
@@ -93,23 +102,44 @@ export const createProduct = async (req, res, next) => {
             variantesFinal = variantes;
         }
 
+        // Procesar tallas (puede venir como JSON string)
+        let tallasFinal = [];
+        if (typeof tallasDisponibles === "string" && tallasDisponibles.trim()) {
+            try {
+                tallasFinal = JSON.parse(tallasDisponibles);
+            } catch (e) {
+                tallasFinal = tallasDisponibles.split(",").map(t => t.trim()).filter(Boolean);
+            }
+        } else if (Array.isArray(tallasDisponibles)) {
+            tallasFinal = tallasDisponibles;
+        }
+
         const productData = {
             nombre,
             descripcion,
             precioBase,
-            disponibilidad: disponibilidad !== false,
-            stock: stock || 0,
+            disponibilidad: disponibilidad === 'true' || disponibilidad === true,
+            stock: Number(stock) || 0,
             imagenes,
             fichaTecnica,
             etiquetas: etiquetasFinal,
-            variantes: variantesFinal
+            variantes: variantesFinal,
+            tallasDisponibles: tallasFinal
         };
-        console.log('DEBUG processed data for new product:', productData);
+
+        // Campos opcionales de categorización
+        if (precioOriginal) productData.precioOriginal = Number(precioOriginal);
+        if (categoria) productData.categoria = categoria;
+        if (subcategoria) productData.subcategoria = subcategoria;
+        if (edad) productData.edad = edad;
+        if (genero) productData.genero = genero;
+        if (marca) productData.marca = marca;
+        if (personaje) productData.personaje = personaje;
+        if (coleccion) productData.coleccion = coleccion;
 
         const newProduct = new Producto(productData);
         const savedProduct = await newProduct.save();
 
-        console.log('DEBUG saved product:', savedProduct);
         res.status(201).json({ ok: true, data: savedProduct });
     } catch (error) {
         next(error);
@@ -121,16 +151,36 @@ export const createProduct = async (req, res, next) => {
 export const editProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const data = req.body;
+        const data = { ...req.body };
 
         const product = await Producto.findById(id);
         if (!product) {
             return next(createError('PROD_01'));
         }
 
-        // Procesar imágenes
+        // Procesar imágenes nuevas
         if (req.files && req.files["imagenes"]) {
-            data.imagenes = req.files["imagenes"].map(f => f.filename);
+            const newImages = req.files["imagenes"].map(f => f.filename);
+            // Combinar con imágenes existentes si se proporcionan
+            if (data.imagenesExistentes) {
+                try {
+                    const existing = JSON.parse(data.imagenesExistentes);
+                    data.imagenes = [...existing, ...newImages];
+                } catch (e) {
+                    data.imagenes = newImages;
+                }
+            } else {
+                data.imagenes = newImages;
+            }
+            delete data.imagenesExistentes;
+        } else if (data.imagenesExistentes) {
+            // Solo mantener las existentes
+            try {
+                data.imagenes = JSON.parse(data.imagenesExistentes);
+            } catch (e) {
+                // Mantener las actuales
+            }
+            delete data.imagenesExistentes;
         }
 
         // Procesar ficha técnica
@@ -150,6 +200,30 @@ export const editProduct = async (req, res, next) => {
             } catch (e) {
                 data.variantes = [];
             }
+        }
+
+        // Procesar tallas (puede venir como JSON string)
+        if (typeof data.tallasDisponibles === "string" && data.tallasDisponibles.trim()) {
+            try {
+                data.tallasDisponibles = JSON.parse(data.tallasDisponibles);
+            } catch (e) {
+                data.tallasDisponibles = data.tallasDisponibles.split(",").map(t => t.trim()).filter(Boolean);
+            }
+        }
+
+        // Procesar disponibilidad
+        if (data.disponibilidad !== undefined) {
+            data.disponibilidad = data.disponibilidad === 'true' || data.disponibilidad === true;
+        }
+
+        // Procesar stock
+        if (data.stock !== undefined) {
+            data.stock = Number(data.stock) || 0;
+        }
+
+        // Procesar precio original
+        if (data.precioOriginal) {
+            data.precioOriginal = Number(data.precioOriginal);
         }
 
         // Guardar el nombre anterior para detectar cambios
@@ -675,18 +749,26 @@ export const filterProducts = async (req, res, next) => {
             minPrice = '',
             maxPrice = '',
             categories = '',
+            subcategoria = '',
+            edad = '',
+            genero = '',
+            marca = '',
+            personaje = '',
+            coleccion = '',
+            talla = '',
             availability = '',
             tags = ''
         } = req.query;
 
-        // Construir el filtro dinámico
         const filter = {};
 
-        // Filtro de búsqueda por nombre o descripción
+        // Filtro de busqueda por nombre o descripcion
         if (search && search.trim()) {
             filter.$or = [
                 { nombre: { $regex: search.trim(), $options: 'i' } },
-                { descripcion: { $regex: search.trim(), $options: 'i' } }
+                { descripcion: { $regex: search.trim(), $options: 'i' } },
+                { marca: { $regex: search.trim(), $options: 'i' } },
+                { personaje: { $regex: search.trim(), $options: 'i' } }
             ];
         }
 
@@ -701,36 +783,77 @@ export const filterProducts = async (req, res, next) => {
             }
         }
 
-        // Filtro por categorías
+        // Filtro por categoria
         if (categories && categories.trim()) {
-            const categoryArray = categories.split(',').map(c => c.trim()).filter(Boolean);
-            if (categoryArray.length > 0) {
-                filter.categoria = { $in: categoryArray };
-            }
+            const arr = categories.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.categoria = { $in: arr };
+        }
+
+        // Filtro por subcategoria
+        if (subcategoria && subcategoria.trim()) {
+            const arr = subcategoria.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.subcategoria = { $in: arr };
+        }
+
+        // Filtro por edad
+        if (edad && edad.trim()) {
+            const arr = edad.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.edad = { $in: arr };
+        }
+
+        // Filtro por genero
+        if (genero && genero.trim()) {
+            const arr = genero.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.genero = { $in: arr };
+        }
+
+        // Filtro por marca
+        if (marca && marca.trim()) {
+            const arr = marca.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.marca = { $in: arr };
+        }
+
+        // Filtro por personaje
+        if (personaje && personaje.trim()) {
+            const arr = personaje.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.personaje = { $in: arr };
+        }
+
+        // Filtro por coleccion
+        if (coleccion && coleccion.trim()) {
+            const arr = coleccion.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.coleccion = { $in: arr };
+        }
+
+        // Filtro por talla
+        if (talla && talla.trim()) {
+            const arr = talla.split(',').map(c => c.trim()).filter(Boolean);
+            if (arr.length > 0) filter.tallasDisponibles = { $in: arr };
         }
 
         // Filtro por disponibilidad
         if (availability && availability.trim()) {
-            const availabilityArray = availability.split(',').map(a => a.trim()).filter(Boolean);
-            if (availabilityArray.length > 0) {
-                const availabilityValues = availabilityArray.map(a => a === 'true');
-                filter.disponibilidad = { $in: availabilityValues };
+            const arr = availability.split(',').map(a => a.trim()).filter(Boolean);
+            if (arr.length > 0) {
+                const values = arr.map(a => a === 'true');
+                filter.disponibilidad = { $in: values };
             }
         }
 
         // Filtro por etiquetas
         if (tags && tags.trim()) {
-            const tagsArray = tags.split(',').map(t => t.trim()).filter(Boolean);
-            if (tagsArray.length > 0) {
-                filter.etiquetas = { $in: tagsArray };
-            }
+            const arr = tags.split(',').map(t => t.trim()).filter(Boolean);
+            if (arr.length > 0) filter.etiquetas = { $in: arr };
         }
 
-        // Construir opciones de ordenamiento
+        // Ordenamiento
         let sortOptions = {};
         switch (sort) {
             case 'nombre':
                 sortOptions = { nombre: 1 };
+                break;
+            case '-nombre':
+                sortOptions = { nombre: -1 };
                 break;
             case 'precioBase':
                 sortOptions = { precioBase: 1 };
@@ -739,25 +862,31 @@ export const filterProducts = async (req, res, next) => {
                 sortOptions = { precioBase: -1 };
                 break;
             case '-createdAt':
+            case '-creadoEn':
                 sortOptions = { creadoEn: -1 };
                 break;
             case 'createdAt':
+            case 'creadoEn':
                 sortOptions = { creadoEn: 1 };
                 break;
+            case 'ventas':
+            case '-ventas':
+                sortOptions = { ventas: -1 };
+                break;
+            case 'descuento':
+                sortOptions = { precioBase: 1 };
+                break;
             default:
-                sortOptions = { nombre: 1 };
+                sortOptions = { creadoEn: -1 };
         }
 
-        // Paginación
         const skip = (Number(page) - 1) * Number(limit);
 
-        // Ejecutar consulta
         const productos = await Producto.find(filter)
             .sort(sortOptions)
             .skip(skip)
             .limit(Number(limit));
 
-        // Contar total para paginación
         const total = await Producto.countDocuments(filter);
         const pages = Math.ceil(total / Number(limit));
 

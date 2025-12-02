@@ -23,12 +23,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   const btnPerfilBottom = document.getElementById('btnPerfilBottom');
   const modalPerfilEl = document.getElementById('modalPerfil');
   const modalAuthMobileEl = document.getElementById('modalAuthMobile');
+  
+  console.log('[navbar] Elements found:', { loginLink: !!loginLink, registerLink: !!registerLink, btnPerfil: !!btnPerfil });
+  
   const modalPerfil = modalPerfilEl ? new bootstrap.Modal(modalPerfilEl) : null;
   const modalAuthMobile = modalAuthMobileEl ? new bootstrap.Modal(modalAuthMobileEl) : null;
 
   function safeSetDisplay(el, value) {
     if (!el) return;
-    try { el.style.display = value; } catch (e) { /* silent */ }
+    try { 
+      // Remove Bootstrap d-flex class if hiding
+      if (value === 'none') {
+        el.classList.remove('d-flex');
+        el.classList.add('d-none');
+      } else {
+        el.classList.remove('d-none');
+        el.classList.add('d-flex');
+      }
+      el.style.display = value; 
+    } catch (e) { /* silent */ }
   }
 
   function renderUserInNavbar(user) {
@@ -36,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnPerfil) {
       btnPerfil.style.display = 'flex';
       btnPerfil.innerHTML = `
-        <img src="${user.avatar || '/img/default-avatar.png'}" style="width:32px;height:32px;object-fit:cover;border-radius:50%;border:2px solid #e0e0e0;box-shadow:0 1px 4px rgba(0,0,0,0.08);" />
+        <img src="${user.avatar || '/img/icon-user.svg'}" style="width:32px;height:32px;object-fit:cover;border-radius:50%;border:2px solid #e0e0e0;box-shadow:0 1px 4px rgba(0,0,0,0.08);background:#f5f5f5;padding:4px;" />
       `;
       btnPerfil.onclick = () => {
         if (modalPerfil) modalPerfil.show();
@@ -85,11 +98,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       // Llamada normal al endpoint de sesión
       const res = await API.get('/auth/me', { withCredentials: true });
+      console.log('[navbar checkSession] response:', res?.data);
       if (res?.data?.ok && res.data.user) {
+        console.log('[navbar] Usuario autenticado, ocultando login/register');
         safeSetDisplay(loginLink, 'none');
         safeSetDisplay(registerLink, 'none');
         renderUserInNavbar(res.data.user);
-        dlog('[checkSession] usuario obtenido');
+        console.log('[navbar] loginLink display after hide:', loginLink?.style?.display);
         return true;
       } else {
         // Si responde OK pero sin user -> tratamos como no logueado (sin ruido)

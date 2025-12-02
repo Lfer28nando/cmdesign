@@ -27,44 +27,55 @@ const calificacionSchema = new mongoose.Schema({
 
     //Esquema principal de Producto
 const productoSchema = new mongoose.Schema({
-  nombre: { type: String, required: true }, //name del producto
-  descripcion: { type: String }, //descripción detallada del producto
-  precioBase: { type: Number, required: true }, //precio base sin variantes ni descuentos
-  disponibilidad: { type: Boolean, default: true }, //si el producto está disponible para la venta
-  stock: { type: Number, default: 0 }, //cantidad en inventario
+  nombre: { type: String, required: true },
+  descripcion: { type: String },
+  precioBase: { type: Number, required: true },
+  precioOriginal: { type: Number }, // Precio antes de descuento (si aplica)
+  disponibilidad: { type: Boolean, default: true },
+  stock: { type: Number, default: 0 },
 
   // RF-PROD-04
-  imagenes: [{ type: String }], // nombre de la imagnen o URL
-  fichaTecnica: { type: String }, // archivo PDF u otro
+  imagenes: [{ type: String }],
+  fichaTecnica: { type: String },
 
   // RF-PROD-05
-  variantes: [varianteSchema], // array de variantes que lee el esquema definido arriba para variantes del producto (tamaño, color, etc.)
+  variantes: [varianteSchema],
 
   // RF-PROD-06
-  listasPrecios: [listaPreciosSchema], // array de listas de precios por canal de venta que lee el esquema definido arriba
+  listasPrecios: [listaPreciosSchema],
 
-  // RF-PROD-08 // sirve para SEO y URLs amigables, para ser usado en rutas tipo /producto/nombre-del-producto
+  // RF-PROD-08 SEO
   seo: {
-    slug: { type: String, unique: true }, // URL amigable generado a partir del nombre
-    metaTitulo: { type: String }, // título para SEO
-    metaDescripcion: { type: String } // descripción para SEO
+    slug: { type: String, unique: true },
+    metaTitulo: { type: String },
+    metaDescripcion: { type: String }
   },
 
   // RF-PROD-15
-  calificaciones: [calificacionSchema], // array de calificaciones y reseñas que lee el esquema definido arriba
+  calificaciones: [calificacionSchema],
 
   // RF-PROD-16
-  etiquetas: [{ type: String }], // ej: ['nuevo', 'oferta', 'popular']
+  etiquetas: [{ type: String }],
 
   // RF-PROD-17
-  canalesVisibilidad: [{ type: String }], // ej: ['web', 'app']
+  canalesVisibilidad: [{ type: String }],
 
-  // Extras para filtros y relaciones
-  categoria: { type: String }, // categoría del producto
-  relacionados: [{ type: mongoose.Schema.Types.ObjectId, ref: "Producto" }], // productos relacionados
+  // Filtros de catalogo (administrables)
+  categoria: { type: String },
+  subcategoria: { type: String },
+  edad: { type: String },        // ej: 'Adulto', 'Nino', 'Bebe'
+  genero: { type: String },      // ej: 'Hombre', 'Mujer', 'Unisex'
+  marca: { type: String },       // ej: 'Marvel', 'DC', 'Disney'
+  personaje: { type: String },   // ej: 'Spider-Man', 'Batman'
+  coleccion: { type: String },   // ej: 'Navidad 2024', 'Verano'
+  tallasDisponibles: [{ type: String }], // ej: ['S', 'M', 'L', 'XL']
 
-  creadoEn: { type: Date, default: Date.now }, // fecha de creación
-  actualizadoEn: { type: Date, default: Date.now }// fecha de última actualización
+  // Extras
+  relacionados: [{ type: mongoose.Schema.Types.ObjectId, ref: "Producto" }],
+  ventas: { type: Number, default: 0 }, // Para ordenar por mas vendidos
+
+  creadoEn: { type: Date, default: Date.now },
+  actualizadoEn: { type: Date, default: Date.now }
 }, {
   timestamps: true
 });
@@ -92,7 +103,14 @@ productoSchema.index({
 
 // RF-11: filtros comunes
 productoSchema.index({ categoria: 1 });
+productoSchema.index({ subcategoria: 1 });
+productoSchema.index({ edad: 1 });
+productoSchema.index({ genero: 1 });
+productoSchema.index({ marca: 1 });
+productoSchema.index({ personaje: 1 });
+productoSchema.index({ coleccion: 1 });
 productoSchema.index({ disponibilidad: 1 });
 productoSchema.index({ precioBase: 1 });
+productoSchema.index({ ventas: -1 });
 
 export const Producto = mongoose.model("Producto", productoSchema);

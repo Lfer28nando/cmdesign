@@ -109,6 +109,12 @@ function createProductCard(product) {
         </div>
 
         ${images.length > 1 ? `
+          <button class="cm-img-nav-btn cm-img-prev" aria-label="Imagen anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button class="cm-img-nav-btn cm-img-next" aria-label="Imagen siguiente">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
           <div class="cm-image-nav">${imageNavZones}</div>
           <div class="cm-image-dots">${imageDots}</div>
         ` : ''}
@@ -285,6 +291,23 @@ function attachCardEvents() {
     });
   });
 
+  // Image navigation buttons
+  $$('.cm-img-prev').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = e.target.closest('.cm-product-card');
+      navigateImage(card, -1);
+    });
+  });
+
+  $$('.cm-img-next').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = e.target.closest('.cm-product-card');
+      navigateImage(card, 1);
+    });
+  });
+
   // Wishlist toggle
   $$('.cm-wishlist-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -317,6 +340,24 @@ function attachCardEvents() {
       window.location.href = `/producto/${card.dataset.id}`;
     });
   });
+}
+
+// Navigate images with buttons
+function navigateImage(card, direction) {
+  if (!card) return;
+  const images = card.querySelectorAll('.cm-product-images img');
+  const dots = card.querySelectorAll('.cm-image-dot');
+  if (images.length <= 1) return;
+  
+  let currentIndex = 0;
+  images.forEach((img, i) => { if (img.classList.contains('active')) currentIndex = i; });
+  
+  let newIndex = currentIndex + direction;
+  if (newIndex < 0) newIndex = images.length - 1;
+  if (newIndex >= images.length) newIndex = 0;
+  
+  images.forEach((img, i) => img.classList.toggle('active', i === newIndex));
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === newIndex));
 }
 
 // Cambiar imagen del producto en hover
