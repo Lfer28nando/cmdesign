@@ -45,3 +45,7 @@ export const renderShirts = (req, res) => {
 export const renderNinos = (req, res) => {
     res.render('pages/ninos')
 };
+
+export const renderNinosShirts = (req, res) => {
+    res.render('pages/ninos-shirts')
+};

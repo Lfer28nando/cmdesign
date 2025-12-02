@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/css/index.styles.css">
 
 <style>
-.cm-ninos-page {
+.cm-shirts-page {
   min-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -12,32 +12,32 @@
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.cm-ninos-header {
+.cm-shirts-header {
   text-align: center;
   margin-bottom: 50px;
 }
 
-.cm-ninos-header h1 {
+.cm-shirts-header h1 {
   font-size: 2.5rem;
   font-weight: 800;
   color: #1a1a1a;
   margin-bottom: 10px;
 }
 
-.cm-ninos-header p {
+.cm-shirts-header p {
   font-size: 1.1rem;
   color: #666;
 }
 
-.cm-ninos-grid {
+.cm-shirts-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  max-width: 900px;
+  max-width: 1200px;
   width: 100%;
 }
 
-.cm-ninos-card {
+.cm-shirts-card {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
@@ -47,29 +47,29 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cm-ninos-card:hover {
+.cm-shirts-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 
-.cm-ninos-card img {
+.cm-shirts-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.cm-ninos-card:hover img {
+.cm-shirts-card:hover img {
   transform: scale(1.08);
 }
 
-.cm-ninos-card-overlay {
+.cm-shirts-card-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
 }
 
-.cm-ninos-card-content {
+.cm-shirts-card-content {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -79,14 +79,14 @@
   text-align: center;
 }
 
-.cm-ninos-card-title {
+.cm-shirts-card-title {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 8px;
   text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-.cm-ninos-card-cta {
+.cm-shirts-card-cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -99,29 +99,24 @@
   transition: all 0.3s ease;
 }
 
-.cm-ninos-card:hover .cm-ninos-card-cta {
+.cm-shirts-card:hover .cm-shirts-card-cta {
   background: #1a1a1a;
   color: white;
 }
 
-/* Card Niño - Azul */
-.cm-ninos-card-nino {
-  background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
-  box-shadow: 0 10px 40px rgba(25, 118, 210, 0.4);
+/* Card Niños - Colorido */
+.cm-shirts-card-ninos {
+  background: linear-gradient(135deg, #ffb74d 0%, #ff9800 100%);
 }
 
-.cm-ninos-card-nino:hover {
-  box-shadow: 0 20px 60px rgba(25, 118, 210, 0.5);
+/* Card Hombres - Azul oscuro */
+.cm-shirts-card-hombres {
+  background: linear-gradient(135deg, #546e7a 0%, #263238 100%);
 }
 
-/* Card Niña - Rosa */
-.cm-ninos-card-nina {
+/* Card Mujeres - Rosa elegante */
+.cm-shirts-card-mujeres {
   background: linear-gradient(135deg, #f48fb1 0%, #e91e63 100%);
-  box-shadow: 0 10px 40px rgba(233, 30, 99, 0.4);
-}
-
-.cm-ninos-card-nina:hover {
-  box-shadow: 0 20px 60px rgba(233, 30, 99, 0.5);
 }
 
 .cm-back-link {
@@ -139,42 +134,48 @@
   color: #1a1a1a;
 }
 
+@media (max-width: 900px) {
+  .cm-shirts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 600px) {
-  .cm-ninos-grid {
+  .cm-shirts-grid {
     grid-template-columns: 1fr;
     gap: 20px;
     padding: 0 10px;
   }
   
-  .cm-ninos-card {
+  .cm-shirts-card {
     aspect-ratio: 3/4;
   }
   
-  .cm-ninos-header h1 {
+  .cm-shirts-header h1 {
     font-size: 1.8rem;
   }
   
-  .cm-ninos-card-title {
+  .cm-shirts-card-title {
     font-size: 1.5rem;
   }
 }
 </style>
 
-<main class="cm-ninos-page">
-  <div class="cm-ninos-header">
-    <h1>Ropa para Niños</h1>
-    <p>Selecciona una categoría para ver nuestra colección</p>
+<main class="cm-shirts-page">
+  <div class="cm-shirts-header">
+    <h1>Camisetas para Todos</h1>
+    <p>Selecciona el género para ver nuestra colección de camisetas</p>
   </div>
   
-  <div class="cm-ninos-grid">
-    <!-- Card Niño -->
-    <a href="/catalogo?genero=niño" class="cm-ninos-card cm-ninos-card-nino">
-      <img src="/img/boy.webp" alt="Ropa para Niño">
-      <div class="cm-ninos-card-overlay"></div>
-      <div class="cm-ninos-card-content">
-        <h2 class="cm-ninos-card-title">Niño</h2>
-        <span class="cm-ninos-card-cta">
-          Ver colección
+  <div class="cm-shirts-grid">
+    <!-- Card Niños - Redirige a página intermedia -->
+    <a href="/ninos-shirts" class="cm-shirts-card cm-shirts-card-ninos">
+      <img src="/img/kids.webp" alt="Camisetas para Niños" onerror="this.src='https://placehold.co/500x625/ffe0b2/e65100?text=NIÑOS'">
+      <div class="cm-shirts-card-overlay"></div>
+      <div class="cm-shirts-card-content">
+        <h2 class="cm-shirts-card-title">Niños</h2>
+        <span class="cm-shirts-card-cta">
+          Ver camisetas
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
@@ -182,14 +183,29 @@
       </div>
     </a>
     
-    <!-- Card Niña -->
-    <a href="/catalogo?genero=niña" class="cm-ninos-card cm-ninos-card-nina">
-      <img src="/img/girl.webp" alt="Ropa para Niña">
-      <div class="cm-ninos-card-overlay"></div>
-      <div class="cm-ninos-card-content">
-        <h2 class="cm-ninos-card-title">Niña</h2>
-        <span class="cm-ninos-card-cta">
-          Ver colección
+    <!-- Card Hombres -->
+    <a href="/catalogo?categoria=camisetas&genero=hombre" class="cm-shirts-card cm-shirts-card-hombres">
+      <img src="/img/man.webp" alt="Camisetas para Hombres" onerror="this.src='https://placehold.co/500x625/90a4ae/263238?text=HOMBRES'">
+      <div class="cm-shirts-card-overlay"></div>
+      <div class="cm-shirts-card-content">
+        <h2 class="cm-shirts-card-title">Hombres</h2>
+        <span class="cm-shirts-card-cta">
+          Ver camisetas
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+    
+    <!-- Card Mujeres -->
+    <a href="/catalogo?categoria=camisetas&genero=mujer" class="cm-shirts-card cm-shirts-card-mujeres">
+      <img src="/img/woman.webp" alt="Camisetas para Mujeres" onerror="this.src='https://placehold.co/500x625/f8bbd9/c2185b?text=MUJERES'">
+      <div class="cm-shirts-card-overlay"></div>
+      <div class="cm-shirts-card-content">
+        <h2 class="cm-shirts-card-title">Mujeres</h2>
+        <span class="cm-shirts-card-cta">
+          Ver camisetas
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
