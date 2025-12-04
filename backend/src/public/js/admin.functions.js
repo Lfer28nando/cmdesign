@@ -79,7 +79,27 @@ function initAddImageButton() {
     const addBtn = document.getElementById('addImageBtn');
     const fileInput = document.getElementById('productImages');
     if (addBtn && fileInput) {
-        addBtn.onclick = () => fileInput.click();
+        // Manejar click y touch para móviles
+        const openFileDialog = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileInput.click();
+        };
+        
+        addBtn.addEventListener('click', openFileDialog);
+        addBtn.addEventListener('touchend', openFileDialog);
+        
+        // Hacer el botón más accesible
+        addBtn.setAttribute('role', 'button');
+        addBtn.setAttribute('tabindex', '0');
+        addBtn.setAttribute('aria-label', 'Agregar imágenes del producto');
+        
+        // Soporte para teclado
+        addBtn.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                openFileDialog(e);
+            }
+        });
     }
 }
 

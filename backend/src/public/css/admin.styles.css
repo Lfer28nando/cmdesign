@@ -1341,6 +1341,65 @@
 }
 
 @media (max-width: 768px) {
+    /* Modal full screen en móviles */
+    .pdp-form-modal .modal-body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Layout en columna en móviles */
+    .pdp-form-container {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Galería más compacta */
+    .pdp-form-gallery {
+        padding: 1rem;
+        position: sticky;
+        top: 0;
+        background: var(--admin-bg);
+        z-index: 10;
+    }
+    
+    .pdp-form-main-image {
+        height: 300px;
+    }
+    
+    /* Thumbnails más grandes y táctiles */
+    .pdp-form-thumbnails {
+        gap: 12px;
+        padding: 12px 0;
+    }
+    
+    .pdp-form-thumb {
+        width: 70px;
+        height: 70px;
+        border-width: 3px;
+    }
+    
+    /* Botón de agregar imagen más grande y táctil */
+    .pdp-form-thumb-add {
+        width: 70px;
+        height: 70px;
+        border-width: 3px;
+        border-style: dashed;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    
+    .pdp-form-thumb-add:active {
+        transform: scale(0.95);
+        background: rgba(229, 57, 53, 0.1);
+    }
+    
+    .pdp-form-thumb-add svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    /* Info del producto */
     .pdp-form-info {
         padding: 1.5rem;
     }
@@ -1360,6 +1419,44 @@
     
     .pdp-form-cat-grid {
         grid-template-columns: 1fr;
+    }
+    
+    /* Inputs más grandes para móvil */
+    .pdp-form-info input,
+    .pdp-form-info select,
+    .pdp-form-info textarea {
+        font-size: 16px; /* Evita zoom en iOS */
+        min-height: 44px; /* Tamaño táctil mínimo */
+    }
+    
+    /* Botones de acción más grandes */
+    .pdp-form-actions {
+        position: sticky;
+        bottom: 0;
+        background: var(--admin-bg);
+        padding: 1rem;
+        margin: 0 -1.5rem;
+        border-top: 1px solid var(--admin-border);
+        z-index: 10;
+    }
+    
+    .pdp-form-btn-save,
+    .pdp-form-btn-cancel {
+        min-height: 48px;
+        font-size: 16px;
+    }
+    
+    /* Ficha técnica más accesible */
+    .pdp-form-tech-label {
+        padding: 16px;
+        font-size: 14px;
+        min-height: 56px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .pdp-form-tech-label svg {
+        width: 24px;
+        height: 24px;
     }
 }
 
@@ -1639,4 +1736,137 @@
 .categories-empty p {
     font-size: 14px;
     margin-bottom: 20px;
+}
+
+/* =============================================
+   Mejoras Móviles Adicionales
+   ============================================= */
+@media (max-width: 768px) {
+    /* Modales en móvil */
+    .modal-fullscreen .modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+        background: var(--admin-surface);
+    }
+    
+    /* Botones más grandes para touch */
+    .btn {
+        min-height: 44px;
+        padding: 0.625rem 1.25rem;
+    }
+    
+    .btn-sm {
+        min-height: 38px;
+        padding: 0.5rem 1rem;
+    }
+    
+    /* Forms más accesibles */
+    .form-control,
+    .form-select {
+        font-size: 16px !important;
+        min-height: 44px;
+    }
+    
+    .form-control-sm {
+        font-size: 14px !important;
+        min-height: 38px;
+    }
+    
+    /* Tablas scrollables en móvil */
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Cards más compactas */
+    .admin-card {
+        margin-bottom: 1rem;
+    }
+    
+    /* Sección de botones apiladas */
+    .section-header-bar {
+        gap: 0.75rem;
+    }
+    
+    .section-header-bar button {
+        width: 100%;
+    }
+    
+    /* Grids responsivas */
+    .genders-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Tooltips y popovers */
+    .tooltip,
+    .popover {
+        font-size: 14px;
+    }
+    
+    /* Mejoras de contraste para móvil */
+    .admin-table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .admin-table td,
+    .admin-table th {
+        border-bottom: 1px solid var(--admin-border);
+    }
+    
+    /* Badges más legibles */
+    .badge {
+        font-size: 12px;
+        padding: 0.375rem 0.625rem;
+    }
+    
+    /* Navegación bottom en móvil si existe */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--admin-surface);
+        border-top: 1px solid var(--admin-border);
+        padding: 0.5rem;
+        z-index: 1000;
+    }
+}
+
+/* Optimizaciones táctiles específicas */
+@media (hover: none) and (pointer: coarse) {
+    /* Dispositivos táctiles */
+    * {
+        -webkit-tap-highlight-color: rgba(229, 57, 53, 0.1);
+    }
+    
+    /* Aumentar área de click */
+    .sidebar-link,
+    .btn,
+    .form-check-input,
+    .pdp-form-thumb,
+    .pdp-form-thumb-add {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* Remover hover effects en touch */
+    .sidebar-link:hover,
+    .btn:hover,
+    .pdp-form-thumb:hover {
+        transform: none;
+    }
+    
+    /* Active states más pronunciados */
+    .sidebar-link:active,
+    .btn:active,
+    .pdp-form-thumb:active {
+        transform: scale(0.96);
+        opacity: 0.8;
+    }
 }
