@@ -2,8 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import User from '../models/user.model.js';
 
-dotenv.config({ path: './src/.env' });
-
+dotenv.config({ quiet: true });
 export const guestOnly = (req, res, next) => {
      try {
     // Si usas cookie con nombre 'token' (ajusta el nombre)

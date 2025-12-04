@@ -18,12 +18,8 @@ import {
   migrarCarritoLocalStorage
 } from "../controllers/shopCar.controller.js";
 import { authRequired } from "../middlewares/validateToken.middleware.js";
-import { generalLimiter } from "../middlewares/rateLimiter.middleware.js";
 
 const router = Router();
-
-// Aplicar rate limiter general a todas las rutas del carrito
-router.use(generalLimiter);
 
 // ============================
 // RUTAS DEL CARRITO DE COMPRAS

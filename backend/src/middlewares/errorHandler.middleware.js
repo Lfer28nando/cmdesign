@@ -101,22 +101,24 @@ export const asyncHandler = (fn) => (req, res, next) => {
 // Función para logs más organizados en producción
 // En desarrollo uso console.error, en producción podría usar Winston o similar
 const logError = (error, req) => {
-    const logData = {
-        timestamp: new Date().toISOString(),
-        level: 'ERROR',
-        code: error.code || 'UNKNOWN',
-        message: error.userMessage || error.message,
-        url: req.originalUrl,
-        method: req.method,
-        ip: req.ip,
-        userAgent: req.get('User-Agent')
-    };
-
-    // En producción aquí podría enviar a un servicio de logging
-    if (process.env.NODE_ENV === 'production') {
-        // TODO: Integrar con Winston, Sentry, CloudWatch, etc.
-        console.error(JSON.stringify(logData));
-    } else {
-        console.error('🐛 Error de desarrollo:', logData);
+    console.error('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.error('🔴 ERROR CAPTURADO EN EL SERVIDOR');
+    console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.error('⏰ Timestamp:', new Date().toISOString());
+    console.error('📍 Endpoint:', req.method, req.originalUrl);
+    console.error('🌐 IP:', req.ip);
+    console.error('🔑 Código Error:', error.code || 'UNKNOWN');
+    console.error('💬 Mensaje Usuario:', error.userMessage || error.message);
+    console.error('🔧 Mensaje Desarrollador:', error.devMessage || error.message);
+    
+    // Mostrar información adicional si existe
+    if (error.additionalInfo && Object.keys(error.additionalInfo).length > 0) {
+        console.error('📋 Info Adicional:', JSON.stringify(error.additionalInfo, null, 2));
     }
+    
+    // STACK TRACE COMPLETO - esto es lo más importante para debugging
+    console.error('📚 Stack Trace Completo:');
+    console.error(error.stack || 'No stack trace disponible');
+    
+    console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 };

@@ -30,6 +30,4 @@ const pageConfigSchema = new mongoose.Schema({
   timestamps: true
 });
 
-pageConfigSchema.index({ slug: 1 });
-
 export const PageConfig = mongoose.model("PageConfig", pageConfigSchema);

@@ -1,20 +1,18 @@
 import User from "../models/user.model.js";
 import dotenv from "dotenv";
-dotenv.config({ path: './src/.env' });
+dotenv.config({ quiet: true });
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
-import { sendPasswordResetEmail, sendEmailVerificationCode, sendEmailChangeNotification } from "../config/email.js";
 import { createError } from "../utils/customError.js";
 import speakeasy from "speakeasy";
 import qrcode from "qrcode";
 import jwt from "jsonwebtoken";
 
-const cookieDomain = process.env.COOKIE_DOMAIN || undefined;
 
 // 01- Registrar usuario.
 export const register = async (req, res, next) => {
     try {
-        const { username, email, password, cellphone } = req.body;
+        const { username, email, password } = req.body;
 
         // Verificar si el email ya existe
         const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -30,7 +28,6 @@ export const register = async (req, res, next) => {
             username: username.trim(),
             email: email.toLowerCase().trim(),
             password: passwordHash,
-            cellphone: cellphone?.trim()
         });
 
         const userSaved = await newUser.save();
@@ -40,7 +37,6 @@ export const register = async (req, res, next) => {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: cookieDomain,
             maxAge: 24 * 60 * 60 * 1000
         });
 
@@ -51,7 +47,6 @@ export const register = async (req, res, next) => {
                 id: userSaved._id,
                 username: userSaved.username,
                 email: userSaved.email,
-                cellphone: userSaved.cellphone,
                 role: userSaved.role,
                 verifiedEmail: userSaved.verifiedEmail,
                 createdAt: userSaved.createdAt,
@@ -121,7 +116,6 @@ export const login = async (req, res, next) => {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: cookieDomain,
             maxAge: 24 * 60 * 60 * 1000
         });
 
@@ -610,7 +604,6 @@ export const verify2FA = async (req, res, next) => {
                         httpOnly: true,
                         secure: true,
                         sameSite: 'none',
-                        domain: cookieDomain,
                         maxAge: 24 * 60 * 60 * 1000
                     });
                 }

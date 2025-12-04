@@ -1,19 +1,15 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
 // Routes
 import authRoutes from "./routes/auth.routes.js";
-import googleAuthRoutes from "./routes/googleAuth.routes.js";
 import productoRoutes from "./routes/product.routes.js";
 import shopCartRoutes from "./routes/shopCart.routes.js";
-import checkoutRoutes from "./routes/checkout.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
@@ -22,16 +18,11 @@ import webRoutes from "./routes/web.routes.js";
 
 // Middlewares
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler.middleware.js';
-import { 
-    generalLimiter, 
-    trustProxyMiddleware, 
-    logRateLimit 
-} from './middlewares/rateLimiter.middleware.js';
+
 
 // Config
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.join(__dirname, '.env') });
 
 // ================================================================
 // VALIDAR VARIABLES DE ENTORNO CRÍTICAS
@@ -50,51 +41,12 @@ if (missingVars.length > 0) {
 // ================================================================
 const app = express();
 
-// ================================================================
-// 1. CONFIGURACIÓN DE SEGURIDAD Y PROXY
-// ================================================================
-trustProxyMiddleware(app);
-
-// ================================================================
-// 2. RATE LIMITING
-// ================================================================
-app.use(generalLimiter);
-app.use(logRateLimit);
 
 // ================================================================
 // 3. ARCHIVOS ESTÁTICOS (ANTES DE CORS)
 // ================================================================
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
-// ================================================================
-// 4. CORS (SOLO PARA API, NO ARCHIVOS ESTÁTICOS)
-// ================================================================
-const allowedOriginsEnv = process.env.ALLOWED_ORIGINS || process.env.FRONTEND_URL || 'http://localhost:5173';
-const allowedOrigins = allowedOriginsEnv.split(',').map(s => s.trim()).filter(Boolean);
-
-if (allowedOrigins.length === 0) {
-    console.warn('⚠️  No CORS origins configured. Using default: http://localhost:5173');
-    allowedOrigins.push('http://localhost:5173');
-}
-
-console.log('[CORS] Allowed origins:', allowedOrigins);
-
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        
-        if (allowedOrigins.includes(origin.trim().replace(/\/+$/, ''))) {
-            return callback(null, true);
-        }
-        
-        console.warn(`[CORS] Rejected origin: ${origin}`);
-        return callback(new Error('CORS: origin not allowed'));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
-}));
 
 // ================================================================
 // 5. PARSERS Y LOGGING
@@ -162,10 +114,8 @@ app.get('/health', (req, res) => {
 // 10. RUTAS API (JSON)
 // ================================================================
 app.use("/api/auth", authRoutes);
-app.use("/auth", googleAuthRoutes);
 app.use("/api/products", productoRoutes);
 app.use("/api/cart", shopCartRoutes);
-app.use("/api/checkout", checkoutRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/categories", categoryRoutes);
