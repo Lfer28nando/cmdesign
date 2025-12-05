@@ -16,20 +16,12 @@ export default async function authGuard(redirectTo = '/login') {
 
   // Verificar autenticación normal
   try {
-    const res = await API.get('/auth/me');
-    if (res?.data?.ok && res.data.user) {
+    const res = await API.get('/api/auth/profile');
+    if (res?.data?.success && res.data.user) {
       return; // Autenticado, continuar
     }
   } catch (err) {
-    // Intentar con el otro endpoint
-    try {
-      const res = await API.get('/api/auth/profile');
-      if (res?.data?.success && res.data.user) {
-        return; // Autenticado, continuar
-      }
-    } catch (err2) {
-      // No autenticado
-    }
+    // No autenticado
   }
 
   // No autenticado -> redirigir

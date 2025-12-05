@@ -292,10 +292,10 @@ export async function uploadProductImage(req, res, next) {
             return next(createError('PROD_01'));
         }
 
-        product.imagenes.push(req.file.path);
+        product.imagenes.push(req.file.filename);
         await product.save();
 
-        res.json({ ok: true, data: { message: 'Imagen subida', path: req.file.path } });
+        res.json({ ok: true, data: { message: 'Imagen subida', path: req.file.filename } });
     } catch (error) {
         next(error);
     }

@@ -1951,7 +1951,7 @@ function initForms() {
     });
     
     // Category Type Change - toggle parent select
-    document.getElementById('categoryType')?.addEventListener('change', toggleParentSelect);
+    document.getElementById('categoryType')?.addEventListener('change', toggleCategoryFormFields);
     
     // Order Status Change
     document.getElementById('orderStatusChange')?.addEventListener('change', async (e) => {
